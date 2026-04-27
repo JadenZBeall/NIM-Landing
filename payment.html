@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Your Evaluation · Ohana Belle Press</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --night:     #06050d;
+  --deep:      #0a0910;
+  --ember:     #F0B05A;
+  --ember-mid: #D4783E;
+  --ember-low: #8a4020;
+  --bone:      #F8F0DC;
+  --ash:       #DDD0B0;
+  --smoke:     #B0A080;
+  --dim:       #7A6A50;
+  --line:      rgba(212,120,62,0.18);
+  --text-hero: #FDF6E8;
+  --text-body: #E8DCBC;
+  --text-mid:  #C8B890;
+  --text-low:  #9A8A6A;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--night);
+  color: var(--bone);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* SUBTLE BACKGROUND GLOW */
+body::before {
+  content: '';
+  position: fixed;
+  bottom: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,120,62,0.07) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.layer { position: relative; z-index: 2; }
+
+/* HEADER */
+header {
+  padding: 2.2rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  color: var(--ember);
+  text-decoration: none;
+}
+
+.header-status {
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* STEP INDICATOR */
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 2.5rem 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.step-num {
+  width: 24px; height: 24px;
+  border: 1px solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.62rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+.step.done .step-num   { border-color: var(--ember-mid); color: var(--ember-mid); }
+.step.done .step-label { color: var(--dim); }
+.step.active .step-num   { border-color: var(--ember); color: var(--ember); background: rgba(240,176,90,0.1); }
+.step.active .step-label { color: var(--text-body); }
+.step.pending .step-num   { border-color: rgba(212,120,62,0.2); color: var(--dim); }
+.step.pending .step-label { color: var(--dim); }
+
+.step-connector {
+  width: 48px; height: 1px;
+  background: var(--line);
+  margin: 0 0.5rem;
+}
+
+/* MAIN */
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 5rem 2rem 7rem;
+}
+
+/* ACCEPTANCE NOTICE */
+.acceptance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  border: 1px solid rgba(212,120,62,0.35);
+  background: rgba(212,120,62,0.06);
+  padding: 0.7rem 1.4rem;
+  margin-bottom: 3rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+
+.acceptance-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ember-mid);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.7); }
+}
+
+.page-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.15;
+  color: var(--text-hero);
+  margin-bottom: 1.2rem;
+}
+
+.page-headline em {
+  font-style: italic;
+  color: var(--ember);
+}
+
+.page-sub {
+  font-size: 0.95rem;
+  color: var(--text-body);
+  line-height: 1.9;
+  margin-bottom: 3.5rem;
+  max-width: 520px;
+}
+
+/* ORDER SUMMARY */
+.order-summary {
+  border: 1px solid var(--line);
+  background: rgba(9,8,15,0.85);
+  margin-bottom: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.order-summary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ember-mid), transparent);
+}
+
+.order-header {
+  padding: 1.6rem 2rem;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.order-id {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--ember);
+}
+
+.order-body { padding: 1.6rem 2rem; }
+
+.order-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.order-item-name {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  line-height: 1.5;
+}
+
+.order-item-desc {
+  font-size: 0.75rem;
+  color: var(--text-low);
+  margin-top: 0.2rem;
+}
+
+.order-item-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--ember);
+  white-space: nowrap;
+  margin-left: 1.5rem;
+}
+
+.order-footer {
+  padding: 1.2rem 2rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-total-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.order-total-amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: var(--text-body);
+}
+
+/* TIER SELECTOR */
+.tier-selector {
+  margin-bottom: 2.5rem;
+}
+
+.tier-selector-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1rem;
+}
+
+.tier-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.tier-option {
+  background: var(--night);
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-left: 2px solid transparent;
+}
+
+.tier-option:hover { background: rgba(26,18,48,0.6); }
+
+.tier-option.selected {
+  background: rgba(26,18,48,0.7);
+  border-left-color: var(--ember-mid);
+}
+
+.tier-option-left { display: flex; flex-direction: column; gap: 0.3rem; }
+
+.tier-option-name {
+  font-size: 0.85rem;
+  color: var(--text-body);
+  letter-spacing: 0.04em;
+}
+
+.tier-option-desc {
+  font-size: 0.72rem;
+  color: var(--text-low);
+  line-height: 1.5;
+}
+
+.tier-option-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--ember);
+  white-space: nowrap;
+  margin-left: 1.5rem;
+}
+
+.tier-radio {
+  display: none;
+}
+
+/* PAYPAL BUTTONS */
+.payment-section { margin-bottom: 2.5rem; }
+
+.payment-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1.2rem;
+}
+
+.paypal-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.1rem;
+  background: var(--ember-mid);
+  border: 1px solid var(--ember-mid);
+  color: var(--night);
+  text-decoration: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+  margin-bottom: 0.8rem;
+}
+
+.paypal-btn:hover {
+  background: var(--ember);
+  border-color: var(--ember);
+}
+
+.paypal-btn svg {
+  width: 18px; height: 18px;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.payment-or {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.2rem 0;
+  color: var(--dim);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.payment-or::before, .payment-or::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.email-pay-note {
+  font-size: 0.82rem;
+  color: var(--text-low);
+  line-height: 1.85;
+  text-align: center;
+  padding: 1.2rem;
+  border: 1px solid var(--line);
+  background: rgba(9,8,15,0.5);
+}
+
+.email-pay-note a {
+  color: var(--ember-mid);
+  text-decoration: none;
+}
+.email-pay-note a:hover { color: var(--ember); }
+
+/* ASSURANCE BLOCK */
+.assurance-block {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  border-left: 2px solid rgba(212,120,62,0.3);
+  background: rgba(212,120,62,0.03);
+}
+
+.assurance-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+  font-size: 0.82rem;
+  color: var(--text-body);
+  line-height: 1.65;
+}
+.assurance-item:last-child { margin-bottom: 0; }
+
+.assurance-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ember-mid);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* NEXT STEPS */
+.next-steps {
+  max-width: 100%;
+  border-left: 1px solid rgba(212,120,62,0.25);
+  padding-left: 2rem;
+  margin-bottom: 2rem;
+}
+
+.next-steps-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1.4rem;
+}
+
+.next-step {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-body);
+  line-height: 1.75;
+}
+
+.next-step-num {
+  color: var(--ember-mid);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.next-step a { color: var(--ember); text-decoration: none; }
+.next-step a:hover { text-decoration: underline; }
+
+/* FOOTER */
+footer {
+  padding: 3rem 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(212,120,62,0.08);
+}
+
+footer p {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  line-height: 2.4;
+}
+
+footer a { color: rgba(212,120,62,0.65); text-decoration: none; }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  header { padding: 1.5rem; }
+  main { padding: 3.5rem 1.5rem 5rem; }
+  .steps { gap: 0; padding: 1.8rem 1rem; }
+  .step-connector { width: 24px; }
+  .tier-option { flex-wrap: wrap; gap: 0.5rem; }
+  .tier-option-price { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="layer">
+
+<header>
+  <a class="wordmark" href="index.html">Ohana Belle Press</a>
+  <span class="header-status">Application Accepted</span>
+</header>
+
+<!-- STEP INDICATOR -->
+<div class="steps">
+  <div class="step done">
+    <div class="step-num">1</div>
+    <span class="step-label">Apply</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step active">
+    <div class="step-num">2</div>
+    <span class="step-label">Confirm &amp; Pay</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step pending">
+    <div class="step-num">3</div>
+    <span class="step-label">Submit Manuscript</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step pending">
+    <div class="step-num">4</div>
+    <span class="step-label">Receive Hearthprint</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="acceptance-badge">
+    <span class="acceptance-dot"></span>
+    Application Accepted
+  </div>
+
+  <h1 class="page-headline">
+    Your application<br>has been <em>accepted.</em>
+  </h1>
+
+  <p class="page-sub">
+    Confirm your tier below and complete payment to reserve your evaluation slot.
+    Once payment is received, you will be contacted with instructions for submitting
+    your manuscript. Turnaround is typically 5 to 7 business days from submission.
+  </p>
+
+  <!-- TIER SELECTOR -->
+  <div class="tier-selector">
+    <p class="tier-selector-label">Confirm Your Tier</p>
+    <div class="tier-options">
+
+      <label class="tier-option" id="tier1" onclick="selectTier('tier1', 47, 'Mini NIM Snapshot')">
+        <input type="radio" name="tier" class="tier-radio" value="47">
+        <div class="tier-option-left">
+          <span class="tier-option-name">Mini NIM Snapshot</span>
+          <span class="tier-option-desc">First chapter diagnostic &nbsp;&middot;&nbsp; Single priority fix</span>
+        </div>
+        <span class="tier-option-price">$47</span>
+      </label>
+
+      <label class="tier-option selected" id="tier2" onclick="selectTier('tier2', 147, 'Full NIM Diagnostic')">
+        <input type="radio" name="tier" class="tier-radio" value="147" checked>
+        <div class="tier-option-left">
+          <span class="tier-option-name">Full NIM Diagnostic</span>
+          <span class="tier-option-desc">Complete four-force evaluation &nbsp;&middot;&nbsp; Hearthprint report &nbsp;&middot;&nbsp; Repair roadmap</span>
+        </div>
+        <span class="tier-option-price">$147</span>
+      </label>
+
+      <label class="tier-option" id="tier3" onclick="selectTier('tier3', 297, 'Premium + Video Walkthrough')">
+        <input type="radio" name="tier" class="tier-radio" value="297">
+        <div class="tier-option-left">
+          <span class="tier-option-name">Premium + Video Walkthrough</span>
+          <span class="tier-option-desc">Full Diagnostic &nbsp;&middot;&nbsp; Recorded Loom debrief &nbsp;&middot;&nbsp; Revision sequence</span>
+        </div>
+        <span class="tier-option-price">$297</span>
+      </label>
+
+    </div>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="order-summary">
+    <div class="order-header">
+      <span class="order-label">Order Summary</span>
+      <span class="order-id">Ohana Belle Press &nbsp;&middot;&nbsp; NIM</span>
+    </div>
+    <div class="order-body">
+      <div class="order-row">
+        <div>
+          <div class="order-item-name" id="summaryName">Full NIM Diagnostic</div>
+          <div class="order-item-desc">Narrative Intelligence Method &nbsp;&middot;&nbsp; Hearthprint Evaluation</div>
+        </div>
+        <div class="order-item-price" id="summaryPrice">$147</div>
+      </div>
+    </div>
+    <div class="order-footer">
+      <span class="order-total-label">Total Due</span>
+      <span class="order-total-amount" id="summaryTotal">$147.00</span>
+    </div>
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="payment-section">
+    <p class="payment-label">Complete Payment</p>
+
+    <a id="paypalBtn" href="https://paypal.me/LoveOhanaBelle/147" target="_blank" class="paypal-btn">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.5 8.5C19.5 11.5 17.5 13.5 14.5 14H11L10 19H7L9 8.5H14.5C17 8.5 19.5 8.5 19.5 8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M6 11.5C6 11.5 5.5 14 5 16.5H8.5L9.5 11.5H6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+      Pay via PayPal &nbsp;&middot;&nbsp; <span id="btnAmount">$147</span>
+    </a>
+
+    <div class="payment-or">or</div>
+
+    <div class="email-pay-note">
+      Prefer to pay by other arrangement? Email
+      <a href="mailto:LoveOhanaBelle@gmail.com">LoveOhanaBelle@gmail.com</a>
+      and we will sort it out before your slot is released.
+    </div>
+  </div>
+
+  <!-- ASSURANCES -->
+  <div class="assurance-block">
+    <div class="assurance-item">
+      <span class="assurance-mark">·</span>
+      <span>Your manuscript is never stored, shared, or used beyond your evaluation. All submissions are handled in strict confidence.</span>
+    </div>
+    <div class="assurance-item">
+      <span class="assurance-mark">·</span>
+      <span>A confidentiality agreement is available on request. Ask for it before or after payment.</span>
+    </div>
+    <div class="assurance-item">
+      <span class="assurance-mark">·</span>
+      <span>If you are not satisfied with the diagnostic, email us. Every case is handled individually.</span>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="next-steps">
+    <p class="next-steps-label">After Payment</p>
+    <div class="next-step">
+      <span class="next-step-num">1</span>
+      <span>You will receive a confirmation email at the address you provided during application.</span>
+    </div>
+    <div class="next-step">
+      <span class="next-step-num">2</span>
+      <span>That email contains a link to the manuscript submission form. Submit your full manuscript or excerpt as directed.</span>
+    </div>
+    <div class="next-step">
+      <span class="next-step-num">3</span>
+      <span>Your Hearthprint evaluation will be delivered within 5 to 7 business days of submission.</span>
+    </div>
+    <div class="next-step">
+      <span class="next-step-num">4</span>
+      <span>Questions at any point: <a href="mailto:LoveOhanaBelle@gmail.com">LoveOhanaBelle@gmail.com</a></span>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>
+    Ohana Belle Press &nbsp;&middot;&nbsp; West Virginia<br>
+    Narrative Intelligence Method &nbsp;&middot;&nbsp; Hearthprint&trade;<br>
+    <a href="mailto:LoveOhanaBelle@gmail.com">LoveOhanaBelle@gmail.com</a>
+  </p>
+</footer>
+
+</div>
+
+<script>
+function selectTier(id, amount, name) {
+  document.querySelectorAll('.tier-option').forEach(el => el.classList.remove('selected'));
+  document.getElementById(id).classList.add('selected');
+  document.getElementById('summaryName').textContent  = name;
+  document.getElementById('summaryPrice').textContent = '$' + amount;
+  document.getElementById('summaryTotal').textContent = '$' + amount + '.00';
+  document.getElementById('btnAmount').textContent    = '$' + amount;
+  document.getElementById('paypalBtn').href = 'https://paypal.me/LoveOhanaBelle/' + amount;
+}
+</script>
+
+</body>
+</html>

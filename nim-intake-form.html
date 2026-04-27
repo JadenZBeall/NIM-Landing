@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Your Manuscript · Ohana Belle Press</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --night:     #06050d;
+  --ember:     #F0B05A;
+  --ember-mid: #D4783E;
+  --ember-low: #8a4020;
+  --bone:      #F8F0DC;
+  --ash:       #DDD0B0;
+  --dim:       #7A6A50;
+  --line:      rgba(212,120,62,0.18);
+  --text-hero: #FDF6E8;
+  --text-body: #E8DCBC;
+  --text-mid:  #C8B890;
+  --text-low:  #9A8A6A;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--night);
+  color: var(--bone);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  bottom: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,120,62,0.06) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.layer { position: relative; z-index: 2; }
+
+/* HEADER */
+header {
+  padding: 2.2rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  color: var(--ember);
+  text-decoration: none;
+}
+
+.header-status {
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* STEPS */
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.step-num {
+  width: 24px; height: 24px;
+  border: 1px solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.62rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+.step.done .step-num   { border-color: var(--ember-mid); color: var(--ember-mid); }
+.step.done .step-label { color: var(--dim); }
+.step.active .step-num   { border-color: var(--ember); color: var(--ember); background: rgba(240,176,90,0.1); }
+.step.active .step-label { color: var(--text-body); }
+.step.pending .step-num   { border-color: rgba(212,120,62,0.2); color: var(--dim); }
+.step.pending .step-label { color: var(--dim); }
+
+.step-connector {
+  width: 48px; height: 1px;
+  background: var(--line);
+  margin: 0 0.5rem;
+}
+
+/* MAIN */
+main {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 5rem 2rem 7rem;
+}
+
+.page-eyebrow {
+  font-size: 0.58rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 1.5rem;
+}
+
+.page-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.15;
+  color: var(--text-hero);
+  margin-bottom: 1.2rem;
+}
+
+.page-headline em {
+  font-style: italic;
+  color: var(--ember);
+}
+
+.page-sub {
+  font-size: 0.95rem;
+  color: var(--text-body);
+  line-height: 1.9;
+  margin-bottom: 3.5rem;
+  max-width: 520px;
+}
+
+/* CONFIDENTIALITY NOTICE */
+.confidentiality-notice {
+  display: flex;
+  gap: 1rem;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid rgba(212,120,62,0.25);
+  background: rgba(212,120,62,0.04);
+  margin-bottom: 3rem;
+}
+
+.cn-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--ember-mid);
+  flex-shrink: 0;
+  line-height: 1.3;
+}
+
+.cn-text {
+  font-size: 0.82rem;
+  color: var(--text-body);
+  line-height: 1.75;
+}
+
+/* FORM */
+.form-section {
+  border: 1px solid var(--line);
+  background: rgba(9,8,15,0.85);
+  padding: 3rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ember-mid), transparent);
+}
+
+.form-group { margin-bottom: 2rem; }
+.form-group:last-of-type { margin-bottom: 0; }
+
+.form-label {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 0.6rem;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(212,120,62,0.22);
+  color: var(--text-body);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 300;
+  padding: 0.85rem 1rem;
+  outline: none;
+  transition: border-color 0.3s, background 0.3s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: rgba(212,120,62,0.5);
+  background: rgba(255,255,255,0.05);
+}
+
+.form-input::placeholder, .form-textarea::placeholder { color: var(--dim); }
+
+.form-textarea {
+  min-height: 130px;
+  resize: vertical;
+  line-height: 1.75;
+}
+
+.form-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a4020' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+.form-select option { background: #111; color: var(--text-body); }
+
+.form-hint {
+  font-size: 0.65rem;
+  color: var(--text-low);
+  margin-top: 0.5rem;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+}
+
+/* FILE UPLOAD */
+.file-upload-zone {
+  border: 1px dashed rgba(212,120,62,0.35);
+  background: rgba(212,120,62,0.03);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  position: relative;
+}
+
+.file-upload-zone:hover {
+  background: rgba(212,120,62,0.06);
+  border-color: rgba(212,120,62,0.5);
+}
+
+.file-upload-zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-upload-icon {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--ember-mid);
+  margin-bottom: 0.5rem;
+  display: block;
+  pointer-events: none;
+}
+
+.file-upload-label {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  letter-spacing: 0.08em;
+  display: block;
+  pointer-events: none;
+}
+
+.file-upload-types {
+  font-size: 0.62rem;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  margin-top: 0.4rem;
+  display: block;
+  pointer-events: none;
+}
+
+.file-selected {
+  display: none;
+  margin-top: 0.8rem;
+  font-size: 0.75rem;
+  color: var(--ember);
+  letter-spacing: 0.06em;
+}
+
+/* CHECKLIST */
+.pre-submit-checklist {
+  margin: 2.5rem 0;
+  padding: 1.8rem;
+  border: 1px solid var(--line);
+  background: rgba(9,8,15,0.5);
+}
+
+.checklist-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1.2rem;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.82rem;
+  color: var(--text-body);
+  line-height: 1.6;
+  cursor: pointer;
+}
+
+.checklist-item:last-child { margin-bottom: 0; }
+
+.checklist-box {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px; height: 15px;
+  border: 1px solid rgba(212,120,62,0.4);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 3px;
+  transition: all 0.2s;
+}
+
+.checklist-box:checked {
+  background: var(--ember-mid);
+  border-color: var(--ember-mid);
+}
+
+/* SUBMIT */
+.form-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 2.5rem 0;
+}
+
+.form-submit {
+  width: 100%;
+  padding: 1.1rem;
+  background: var(--ember-mid);
+  border: 1px solid var(--ember-mid);
+  color: var(--night);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.form-submit:hover { background: var(--ember); border-color: var(--ember); }
+
+.submit-note {
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-low);
+  margin-top: 1rem;
+  line-height: 1.8;
+}
+
+/* SUCCESS */
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 5rem 2rem;
+}
+.form-success.visible { display: block; }
+
+.success-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 4rem;
+  color: var(--ember);
+  display: block;
+  margin-bottom: 1.5rem;
+  line-height: 1;
+}
+
+.success-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: 2.2rem;
+  color: var(--text-hero);
+  margin-bottom: 1.2rem;
+  line-height: 1.2;
+}
+
+.success-body {
+  font-size: 0.92rem;
+  color: var(--text-body);
+  line-height: 1.9;
+  max-width: 440px;
+  margin: 0 auto 2rem;
+}
+
+.success-timeline {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  text-align: left;
+  border-left: 1px solid rgba(212,120,62,0.3);
+  padding-left: 1.5rem;
+  margin-top: 1rem;
+}
+
+.success-timeline-item {
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  line-height: 1.55;
+}
+
+.success-timeline-item strong {
+  color: var(--ember-mid);
+  font-weight: 400;
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+/* FOOTER */
+footer {
+  padding: 3rem 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(212,120,62,0.08);
+}
+footer p {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  line-height: 2.4;
+}
+footer a { color: rgba(212,120,62,0.65); text-decoration: none; }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  header { padding: 1.5rem; }
+  main { padding: 3.5rem 1.5rem 5rem; }
+  .form-section { padding: 2rem 1.5rem; }
+  .steps { padding: 1.8rem 1rem; }
+  .step-connector { width: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="layer">
+
+<header>
+  <a class="wordmark" href="index.html">Ohana Belle Press</a>
+  <span class="header-status">Payment Confirmed</span>
+</header>
+
+<!-- STEPS -->
+<div class="steps">
+  <div class="step done">
+    <div class="step-num">1</div>
+    <span class="step-label">Apply</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step done">
+    <div class="step-num">2</div>
+    <span class="step-label">Confirm &amp; Pay</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step active">
+    <div class="step-num">3</div>
+    <span class="step-label">Submit Manuscript</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step pending">
+    <div class="step-num">4</div>
+    <span class="step-label">Receive Hearthprint</span>
+  </div>
+</div>
+
+<main>
+
+  <p class="page-eyebrow">Manuscript Submission</p>
+  <h1 class="page-headline">
+    Your evaluation<br>slot is <em>reserved.</em>
+  </h1>
+  <p class="page-sub">
+    Complete the form below to submit your manuscript. Every field gives the evaluation
+    a cleaner read on your work. The more context you provide, the more precise the
+    diagnostic will be.
+  </p>
+
+  <!-- CONFIDENTIALITY NOTICE -->
+  <div class="confidentiality-notice">
+    <span class="cn-mark">&sect;</span>
+    <span class="cn-text">
+      Your manuscript is received in strict confidence and handled as unpublished work.
+      It will not be stored, reproduced, or referenced outside your evaluation.
+      A signed confidentiality agreement is available on request before or after submission.
+    </span>
+  </div>
+
+  <!-- MAIN FORM -->
+  <div class="form-section" id="formSection">
+
+    <div class="form-group">
+      <label class="form-label">Full Name</label>
+      <input type="text" class="form-input" id="iName" placeholder="Your name" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input type="email" class="form-input" id="iEmail" placeholder="your@email.com" required>
+      <p class="form-hint">Use the same address from your application. Your Hearthprint will be delivered here.</p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Manuscript Title</label>
+      <input type="text" class="form-input" id="iTitle" placeholder="Working title is fine">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Genre &amp; Form</label>
+      <select class="form-select" id="iGenre">
+        <option value="" disabled selected>Select primary genre</option>
+        <option>Literary Fiction</option>
+        <option>Commercial Fiction</option>
+        <option>Thriller / Mystery</option>
+        <option>Science Fiction / Fantasy</option>
+        <option>Historical Fiction</option>
+        <option>Memoir / Creative Nonfiction</option>
+        <option>Hybrid / Experimental</option>
+        <option>Romance</option>
+        <option>Horror</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Approximate Word Count</label>
+      <select class="form-select" id="iWordcount">
+        <option value="" disabled selected>Select range</option>
+        <option>Under 30,000</option>
+        <option>30,000 – 60,000</option>
+        <option>60,000 – 90,000</option>
+        <option>90,000 – 120,000</option>
+        <option>Over 120,000</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">What is this manuscript trying to be?</label>
+      <textarea class="form-textarea" id="iIntent"
+        placeholder="Describe the form, the experience you want a reader to have, the thematic territory. Not a pitch — a description of what you set out to build."></textarea>
+      <p class="form-hint">
+        This is the most important context you can give the evaluation. It tells the method
+        what form to read your work against. Be specific. A lyric novel is not a genre label —
+        describe what that means for your manuscript.
+      </p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Where do you believe the manuscript is falling short?</label>
+      <textarea class="form-textarea" id="iWeakness"
+        placeholder="Your honest read. Even if you can't name it precisely, try."></textarea>
+      <p class="form-hint">
+        You don't need certainty here. Uncertainty is useful data.
+        What doesn't feel right, even if you can't explain why?
+      </p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Feedback you've received that confused or concerned you</label>
+      <textarea class="form-textarea" id="iPriorFeedback"
+        placeholder="Optional. Include notes, editor letters, critique group comments — anything that felt off or contradictory."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Tier Purchased</label>
+      <select class="form-select" id="iTier">
+        <option value="" disabled selected>Select</option>
+        <option>Mini NIM Snapshot — $47</option>
+        <option>Full NIM Diagnostic — $147</option>
+        <option>Premium + Video Walkthrough — $297</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Manuscript File</label>
+      <div class="file-upload-zone" id="uploadZone">
+        <input type="file" id="manuscriptFile" accept=".doc,.docx,.pdf,.txt,.rtf"
+          onchange="handleFileSelect(this)">
+        <span class="file-upload-icon">&#x2767;</span>
+        <span class="file-upload-label">Click to upload or drag your manuscript here</span>
+        <span class="file-upload-types">.doc &nbsp;·&nbsp; .docx &nbsp;·&nbsp; .pdf &nbsp;·&nbsp; .txt &nbsp;·&nbsp; .rtf</span>
+        <span class="file-selected" id="fileSelected"></span>
+      </div>
+      <p class="form-hint">
+        For the Mini Snapshot, submit your first chapter only.
+        For Full Diagnostic and Premium tiers, submit the complete manuscript.
+        If your file is over 20MB, email it directly to
+        <a href="mailto:LoveOhanaBelle@gmail.com" style="color:var(--ember-mid);">LoveOhanaBelle@gmail.com</a>
+        with "NIM Manuscript" in the subject line.
+      </p>
+    </div>
+
+    <!-- PRE-SUBMIT CHECKLIST -->
+    <div class="pre-submit-checklist">
+      <p class="checklist-label">Before You Submit</p>
+      <label class="checklist-item">
+        <input type="checkbox" class="checklist-box" id="check1">
+        <span>I have described the intended form of my manuscript, not just its genre.</span>
+      </label>
+      <label class="checklist-item">
+        <input type="checkbox" class="checklist-box" id="check2">
+        <span>My file is the most current draft I want evaluated.</span>
+      </label>
+      <label class="checklist-item">
+        <input type="checkbox" class="checklist-box" id="check3">
+        <span>I understand my Hearthprint will be delivered within 5 to 7 business days.</span>
+      </label>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <button class="form-submit" onclick="handleSubmit()">Submit Manuscript for Evaluation</button>
+    <p class="submit-note">
+      By submitting, you confirm this is your original work and you own the rights to share it for evaluation purposes.
+    </p>
+
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <div class="form-success" id="formSuccess">
+    <span class="success-mark">&#x2767;</span>
+    <h2 class="success-title">Manuscript Received.</h2>
+    <p class="success-body">
+      Your submission is in. The evaluation has begun.
+      You will hear from us within 5 to 7 business days with your completed Hearthprint.
+    </p>
+    <div class="success-timeline">
+      <div class="success-timeline-item">
+        <strong>Now</strong>
+        Submission received and queued for evaluation
+      </div>
+      <div class="success-timeline-item">
+        <strong>Within 48 Hours</strong>
+        Confirmation email with evaluation reference sent
+      </div>
+      <div class="success-timeline-item">
+        <strong>5 to 7 Business Days</strong>
+        Hearthprint delivered to your email address
+      </div>
+      <div class="success-timeline-item">
+        <strong>Questions</strong>
+        <a href="mailto:LoveOhanaBelle@gmail.com" style="color:var(--ember-mid);">LoveOhanaBelle@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>
+    Ohana Belle Press &nbsp;&middot;&nbsp; West Virginia<br>
+    Narrative Intelligence Method &nbsp;&middot;&nbsp; Hearthprint&trade;<br>
+    <a href="mailto:LoveOhanaBelle@gmail.com">LoveOhanaBelle@gmail.com</a>
+  </p>
+</footer>
+
+</div>
+
+<script>
+function handleFileSelect(input) {
+  const display = document.getElementById('fileSelected');
+  if (input.files && input.files[0]) {
+    display.textContent = input.files[0].name;
+    display.style.display = 'block';
+  }
+}
+
+function handleSubmit() {
+  const name  = document.getElementById('iName').value.trim();
+  const email = document.getElementById('iEmail').value.trim();
+  const intent = document.getElementById('iIntent').value.trim();
+
+  if (!name || !email) {
+    alert('Please enter your name and email address.');
+    return;
+  }
+  if (!intent) {
+    alert('Please describe what your manuscript is trying to be. This is the most important context for the evaluation.');
+    return;
+  }
+
+  document.getElementById('formSection').style.display = 'none';
+  const success = document.getElementById('formSuccess');
+  success.classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
