@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ohana Belle Press — Narrative Intelligence Method</title>
+<meta name="description" content="A manuscript diagnostic for novelists who've revised endlessly and still don't know what's wrong. NIM identifies root causes, not symptoms.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --night: #06050d;
+  --deep: #0a0910;
+  --ember: #F0B05A;
+  --ember-mid: #D4783E;
+  --ember-low: #8a4020;
+  --ember-dim: rgba(212,120,62,0.18);
+  --violet: #1a1230;
+  --bone: #F8F0DC;
+  --ash: #DDD0B0;
+  --smoke: #B0A080;
+  --dim: #7A6A50;
+  --line: rgba(212,120,62,0.18);
+  --text-hero: #FDF6E8;
+  --text-body: #E8DCBC;
+  --text-mid: #C8B890;
+  --text-low: #9A8A6A;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--night);
+  color: var(--bone);
+  font-size: 17px;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: default;
+}
+#fireCanvas {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.38;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+}
+#progressBar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(to right, var(--ember-low), var(--ember));
+  z-index: 999;
+  transition: width 0.1s linear;
+}
+.layer { position: relative; z-index: 2; }
+.inner { max-width: 720px; margin: 0 auto; }
+section { padding: 6rem 2rem; }
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 20;
+  padding: 1.6rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(6,5,13,0.97) 0%, transparent 100%);
+  backdrop-filter: blur(2px);
+}
+.wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  color: var(--ember);
+  text-decoration: none;
+}
+.nav-cta {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ash);
+  text-decoration: none;
+  border: 1px solid rgba(212,120,62,0.35);
+  padding: 9px 22px;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+.nav-cta:hover {
+  border-color: var(--ember-mid);
+  color: var(--ember);
+  background: rgba(212,120,62,0.08);
+}
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10rem 2rem 7rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-ambient {
+  position: absolute;
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,120,62,0.09) 0%, transparent 65%);
+  bottom: -20%; left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: ambientPulse 8s ease-in-out infinite;
+}
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+}
+.hero-eyebrow {
+  font-size: 0.58rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 1.1s ease forwards 0.2s;
+}
+.hero-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(2.6rem, 6.5vw, 4.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text-hero);
+  max-width: 780px;
+  margin-bottom: 2.2rem;
+  opacity: 0;
+  animation: fadeUp 1.1s ease forwards 0.45s;
+}
+.hero-headline em { font-style: italic; color: var(--ember); }
+.hero-sub {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--text-body);
+  max-width: 480px;
+  margin: 0 auto 3.5rem;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 1.1s ease forwards 0.7s;
+}
+.hero-cta-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  animation: fadeUp 1.1s ease forwards 0.95s;
+}
+.btn-primary {
+  display: inline-block;
+  border: 1px solid var(--ember-mid);
+  color: var(--ember);
+  padding: 16px 52px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.62rem;
+  font-weight: 400;
+  transition: background 0.35s, color 0.35s, border-color 0.35s;
+  cursor: pointer;
+  background: none;
+  font-family: 'Jost', sans-serif;
+}
+.btn-primary:hover {
+  background: var(--ember-mid);
+  color: var(--night);
+  border-color: var(--ember-mid);
+}
+.btn-secondary {
+  display: inline-block;
+  color: var(--text-low);
+  text-decoration: none;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: 'Jost', sans-serif;
+  transition: color 0.3s;
+}
+.btn-secondary:hover { color: var(--text-mid); }
+.hero-scroll-hint {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.s-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+}
+.s-divider-line {
+  width: 1px; height: 64px;
+  background: linear-gradient(to bottom, transparent, var(--ember-mid), transparent);
+}
+#reader { padding: 7rem 2rem; text-align: center; }
+.reader-inner { max-width: 580px; margin: 0 auto; }
+.reader-graf {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.45rem, 3.2vw, 1.95rem);
+  line-height: 1.55;
+  color: var(--text-hero);
+  margin-bottom: 2rem;
+}
+.reader-pivot {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--text-body);
+  max-width: 480px;
+  margin: 0 auto;
+}
+#reframe {
+  padding: 6rem 2rem;
+  background: linear-gradient(to bottom, transparent, rgba(26,18,48,0.45) 50%, transparent);
+}
+.reframe-label {
+  font-size: 0.56rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 2.5rem;
+}
+.reframe-inner { max-width: 620px; }
+.reframe-main {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(1.55rem, 3.5vw, 2.2rem);
+  line-height: 1.45;
+  color: var(--text-hero);
+  margin-bottom: 2.5rem;
+}
+.reframe-main strong {
+  font-weight: 400;
+  color: var(--ember);
+  font-style: italic;
+}
+.reframe-body {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--text-body);
+  margin-bottom: 1.4rem;
+  max-width: 620px;
+}
+#method { padding: 6rem 2rem; }
+.method-label {
+  font-size: 0.56rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 2.5rem;
+}
+.method-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  color: var(--text-hero);
+  margin-bottom: 2.5rem;
+  max-width: 560px;
+}
+.method-body {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--text-body);
+  margin-bottom: 1.4rem;
+  max-width: 620px;
+}
+#forces { padding: 5rem 2rem; text-align: center; }
+.forces-label {
+  font-size: 0.56rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 3.5rem;
+}
+.forces-visual {
+  width: 320px; height: 320px;
+  margin: 0 auto 4rem;
+  position: relative;
+}
+.forces-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+.force {
+  background: var(--night);
+  padding: 2.2rem 2rem;
+  transition: background 0.3s;
+}
+.force:hover { background: rgba(26,18,48,0.85); }
+.force-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.45rem;
+  color: var(--ember);
+  margin-bottom: 0.5rem;
+}
+.force-desc {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  line-height: 1.75;
+}
+#hearthprint {
+  padding: 7rem 2rem;
+  text-align: center;
+  background: linear-gradient(to bottom, transparent, rgba(26,18,48,0.5) 50%, transparent);
+}
+.hearthprint-label {
+  font-size: 0.56rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 2rem;
+}
+.hearthprint-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  color: var(--text-hero);
+  max-width: 560px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.35;
+}
+.hearthprint-sub {
+  font-size: 0.92rem;
+  color: var(--text-body);
+  max-width: 480px;
+  margin: 0 auto 4rem;
+  line-height: 1.9;
+}
+.hp-artifact {
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  background: rgba(9,8,15,0.92);
+  padding: 2.5rem 2.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.hp-artifact::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ember-mid), transparent);
+}
+.hp-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+.hp-press-mark {
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.hp-profile-badge {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ember);
+  border: 1px solid rgba(212,120,62,0.35);
+  padding: 5px 12px;
+}
+.hp-title-block { text-align: left; margin-bottom: 2.5rem; }
+.hp-ms-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 0.5rem;
+}
+.hp-ms-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--text-mid);
+}
+.hp-forces { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+.hp-force-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+.hp-force-name {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  text-align: right;
+}
+.hp-bar-track {
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.hp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ember-low), var(--ember));
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hp-bar-fill.animate { transform: scaleX(1); }
+.hp-bar-fill.d { width: 72%; }
+.hp-bar-fill.c { width: 93%; }
+.hp-bar-fill.m { width: 97%; }
+.hp-bar-fill.des { width: 90%; }
+.hp-signature-block {
+  border-top: 1px solid var(--line);
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hp-sig-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.hp-sig-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ember);
+}
+.hp-redact {
+  display: inline-block;
+  background: rgba(212,120,62,0.12);
+  border: 1px solid rgba(212,120,62,0.22);
+  color: transparent;
+  user-select: none;
+  border-radius: 2px;
+  font-size: 0.6rem;
+  padding: 2px 24px;
+  vertical-align: middle;
+}
+.hp-watermark {
+  position: absolute;
+  bottom: 1rem; right: 1.5rem;
+  font-size: 0.5rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--dim);
+  opacity: 0.5;
+}
+#lead-magnet {
+  padding: 5rem 2rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(26,18,48,0.35);
+  text-align: center;
+}
+.lm-eyebrow {
+  font-size: 0.56rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 1.5rem;
+}
+.lm-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  color: var(--text-hero);
+  max-width: 540px;
+  margin: 0 auto 1rem;
+  line-height: 1.4;
+}
+.lm-sub {
+  font-size: 0.88rem;
+  color: var(--text-body);
+  max-width: 440px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.85;
+}
+.lm-form { display: flex; gap: 0; max-width: 440px; margin: 0 auto; }
+.lm-input {
+  flex: 1;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(212,120,62,0.28);
+  border-right: none;
+  color: var(--text-body);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 300;
+  padding: 0.85rem 1.2rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.lm-input::placeholder { color: var(--dim); }
+.lm-input:focus { border-color: rgba(212,120,62,0.55); }
+.lm-submit {
+  background: var(--ember-mid);
+  border: 1px solid var(--ember-mid);
+  color: var(--night);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.8rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  white-space: nowrap;
+}
+.lm-submit:hover { background: var(--ember); border-color: var(--ember); }
+.lm-note { font-size: 0.65rem; color: var(--text-low); margin-top: 1rem; letter-spacing: 0.05em; }
+.lm-success {
+  display: none;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--ember);
+}
+.lm-success.visible { display: block; }
+#proof { padding: 7rem 2rem; text-align: center; }
+.proof-label {
+  font-size: 0.56rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 3rem;
+}
+.proof-setup {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 2rem;
+}
+.proof-claim {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.4rem, 3.2vw, 2rem);
+  line-height: 1.55;
+  color: var(--text-hero);
+  max-width: 600px;
+  margin: 0 auto 1.8rem;
+}
+.proof-attribution {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 2.5rem;
+}
+.proof-finding {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  text-align: left;
+  margin-bottom: 2.5rem;
+}
+.proof-finding-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  font-size: 0.88rem;
+  color: var(--text-body);
+  line-height: 1.65;
+}
+.proof-finding-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--ember-mid);
+  margin-top: 0.55rem;
+  flex-shrink: 0;
+}
+.proof-implication {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.9;
+  font-style: italic;
+  border-top: 1px solid var(--line);
+  padding-top: 2rem;
+}
+#transition { padding: 4rem 2rem; text-align: center; }
+.transition-line {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  color: var(--text-body);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+.transition-line em { color: var(--ember); font-style: normal; }
+#apply {
+  padding: 7rem 2rem 8rem;
+  background: linear-gradient(to bottom, transparent, rgba(6,5,13,0.98) 60%);
+}
+.apply-label {
+  font-size: 0.56rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.apply-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  text-align: center;
+  color: var(--text-hero);
+  margin-bottom: 1rem;
+}
+.apply-sub {
+  text-align: center;
+  color: var(--text-body);
+  font-size: 0.9rem;
+  max-width: 500px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.85;
+}
+.apply-model-note {
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--text-low);
+  margin-bottom: 4rem;
+  font-style: italic;
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  max-width: 900px;
+  margin: 0 auto 5rem;
+}
+.pricing-card {
+  background: var(--night);
+  padding: 2.8rem 2.2rem;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+.pricing-card:hover { background: rgba(26,18,48,0.7); }
+.pricing-card.featured { background: rgba(26,18,48,0.5); }
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background 0.3s;
+}
+.pricing-card.featured::before {
+  background: linear-gradient(90deg, transparent, var(--ember-mid), transparent);
+}
+.pricing-featured-tag {
+  font-size: 0.52rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 1rem;
+}
+.pricing-tier {
+  font-size: 0.55rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 1.2rem;
+}
+.pricing-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.8rem;
+  font-weight: 300;
+  color: var(--ember);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.pricing-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  margin-bottom: 1.2rem;
+}
+.pricing-desc {
+  font-size: 0.88rem;
+  color: var(--text-body);
+  line-height: 1.85;
+  margin-bottom: 1.8rem;
+  flex: 1;
+}
+.pricing-includes {
+  list-style: none;
+  margin-bottom: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.pricing-includes li {
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  padding-left: 1.2rem;
+  position: relative;
+  line-height: 1.55;
+}
+.pricing-includes li::before { content: '·'; position: absolute; left: 0; color: var(--ember-mid); }
+.apply-btn {
+  display: block;
+  text-align: center;
+  padding: 14px 20px;
+  border: 1px solid rgba(212,120,62,0.35);
+  color: var(--ember);
+  text-decoration: none;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  transition: background 0.25s, border-color 0.25s, color 0.25s;
+  cursor: pointer;
+  background: none;
+}
+.apply-btn:hover, .pricing-card.featured .apply-btn {
+  background: var(--ember-mid);
+  border-color: var(--ember-mid);
+  color: var(--night);
+}
+.pricing-card.featured .apply-btn:hover { background: var(--ember); border-color: var(--ember); }
+#application-form {
+  max-width: 620px;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  background: rgba(9,8,15,0.85);
+  padding: 3.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+  display: none;
+}
+#application-form::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ember-mid), transparent);
+}
+#application-form.visible { display: block; }
+.form-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 1.8rem;
+  color: var(--text-hero);
+  margin-bottom: 0.5rem;
+}
+.form-selected-tier {
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 2.5rem;
+}
+.form-group { margin-bottom: 1.8rem; }
+.form-label {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ember-mid);
+  margin-bottom: 0.6rem;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(212,120,62,0.22);
+  color: var(--text-body);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 300;
+  padding: 0.85rem 1rem;
+  outline: none;
+  transition: border-color 0.3s, background 0.3s;
+  -webkit-appearance: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: rgba(212,120,62,0.5);
+  background: rgba(255,255,255,0.05);
+}
+.form-select { cursor: pointer; }
+.form-textarea { resize: vertical; min-height: 120px; line-height: 1.7; }
+.form-checkbox-group { display: flex; flex-direction: column; gap: 0.75rem; }
+.form-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--text-body);
+  line-height: 1.5;
+}
+.form-checkbox-label input[type="checkbox"] {
+  width: 16px; height: 16px;
+  margin-top: 2px;
+  accent-color: var(--ember-mid);
+  flex-shrink: 0;
+}
+.form-submit {
+  width: 100%;
+  background: var(--ember-mid);
+  border: 1px solid var(--ember-mid);
+  color: var(--night);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 18px 32px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 0.5rem;
+}
+.form-submit:hover { background: var(--ember); border-color: var(--ember); }
+.form-privacy {
+  font-size: 0.65rem;
+  color: var(--text-low);
+  text-align: center;
+  margin-top: 1.5rem;
+  line-height: 1.7;
+}
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 3rem 2rem;
+}
+.form-success.visible { display: block; }
+.form-success-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--ember);
+  margin-bottom: 1rem;
+}
+.form-success-body {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  line-height: 1.9;
+  max-width: 420px;
+  margin: 0 auto;
+}
+footer {
+  padding: 3rem 2rem;
+  text-align: center;
+  border-top: 1px solid var(--line);
+}
+.footer-inner {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  line-height: 2;
+}
+.footer-inner a { color: var(--ember-mid); text-decoration: none; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+@media (max-width: 640px) {
+  header { padding: 1.2rem 1.5rem; }
+  section { padding: 4rem 1.5rem; }
+  .forces-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  #application-form { padding: 2.5rem 1.5rem; }
+  .lm-form { flex-direction: column; }
+  .lm-input { border-right: 1px solid rgba(212,120,62,0.28); border-bottom: none; }
+  .hp-artifact { padding: 1.8rem 1.5rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+<canvas id="fireCanvas"></canvas>
+
+<header class="layer">
+  <a href="#" class="wordmark">Ohana Belle Press</a>
+  <a href="#apply" class="nav-cta">Apply for Review</a>
+</header>
+
+<section id="hero" class="layer">
+  <div class="hero-ambient"></div>
+  <p class="hero-eyebrow">Ohana Belle Press &nbsp;·&nbsp; Narrative Intelligence Method</p>
+  <h1 class="hero-headline">For novelists who've revised endlessly and still don't know <em>what's wrong.</em></h1>
+  <p class="hero-sub">NIM is a professional manuscript diagnostic that identifies the structural, emotional, and narrative issues holding your book back — and tells you exactly what to fix first.</p>
+  <div class="hero-cta-group">
+    <a href="#apply" class="btn-primary">Apply for Review</a>
+    <button class="btn-secondary" onclick="document.getElementById('reader').scrollIntoView({behavior:'smooth'})">See how it works</button>
+  </div>
+</section>
+
+<div class="s-divider layer"><div class="s-divider-line"></div></div>
+
+<section id="reader" class="layer">
+  <div class="reader-inner">
+    <p class="reader-graf reveal">You have been inside this manuscript long enough to lose the thread of what it actually is.</p>
+    <p class="reader-pivot reveal">The feedback has named things — pacing, stakes, voice — without locating the structure beneath them. You have revised toward those notes and come out the other side still uncertain. Not because the writing is wrong. Because the frame around it has been.</p>
+  </div>
+</section>
+
+<div class="s-divider layer"><div class="s-divider-line"></div></div>
+
+<section id="reframe" class="layer">
+  <div class="inner">
+    <p class="reframe-label reveal">The Problem</p>
+    <p class="reframe-main reveal">Most feedback evaluates your work against <strong>a story it was never trying to be.</strong></p>
+    <p class="reframe-body reveal">A lyric novel is not a failed thriller. A hybrid memoir is not a broken narrative nonfiction. Every form has its own internal logic — its own relationship between structure, voice, and meaning. When that logic is evaluated against a generic model, the diagnosis is always slightly wrong. The revision notes point to symptoms. The structure beneath them stays invisible.</p>
+    <p class="reframe-body reveal">NIM evaluates your manuscript against its declared form. What it finds is not what is wrong with your writing. It is what your writing is actually doing — and where that diverges from what the form requires.</p>
+  </div>
+</section>
+
+<div class="s-divider layer"><div class="s-divider-line"></div></div>
+
+<section id="method" class="layer">
+  <div class="inner">
+    <p class="method-label reveal">The Method</p>
+    <p class="method-headline reveal">A structured system that reads the manuscript, not the reputation.</p>
+    <p class="method-body reveal">The Narrative Intelligence Method identifies the active forces already present in your writing: how the narrative moves, how attachment is built, how meaning accumulates, what sustains attention over time. These forces are mapped against each other — not against an external checklist — to surface alignment, tension, and structural blind spots that are invisible from inside the work.</p>
+    <p class="method-body reveal">What emerges is a coherent model of what your manuscript is doing. Not what someone thinks of it. What it is.</p>
+  </div>
+</section>
+
+<section id="forces" class="layer">
+  <p class="forces-label reveal">The Four Forces</p>
+  <div class="forces-visual reveal">
+    <svg viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <circle cx="160" cy="160" r="155" stroke="rgba(212,120,62,0.12)" stroke-width="1"/>
+      <circle cx="160" cy="160" r="110" stroke="rgba(212,120,62,0.08)" stroke-width="1"/>
+      <circle cx="160" cy="160" r="65" stroke="rgba(212,120,62,0.06)" stroke-width="1"/>
+      <line x1="160" y1="5" x2="160" y2="315" stroke="rgba(212,120,62,0.1)" stroke-width="1"/>
+      <line x1="5" y1="160" x2="315" y2="160" stroke="rgba(212,120,62,0.1)" stroke-width="1"/>
+      <polygon points="160,30 250,160 160,220 70,160" fill="rgba(212,120,62,0.06)" stroke="rgba(212,120,62,0.35)" stroke-width="1"/>
+      <circle cx="160" cy="160" r="4" fill="#D4783E"/>
+      <text x="160" y="22" text-anchor="middle" font-family="Jost" font-size="9" fill="#D4783E" letter-spacing="3">DIRECTION</text>
+      <text x="160" y="302" text-anchor="middle" font-family="Jost" font-size="9" fill="#D4783E" letter-spacing="3">DESIRE</text>
+      <text x="8" y="164" text-anchor="start" font-family="Jost" font-size="9" fill="#D4783E" letter-spacing="2">CONN</text>
+      <text x="272" y="164" text-anchor="start" font-family="Jost" font-size="9" fill="#D4783E" letter-spacing="2">MEAN</text>
+    </svg>
+  </div>
+  <div class="forces-grid reveal">
+    <div class="force">
+      <p class="force-name">Direction</p>
+      <p class="force-desc">What moves the story forward. The engine beneath the prose.</p>
+    </div>
+    <div class="force">
+      <p class="force-name">Connection</p>
+      <p class="force-desc">What binds the reader to character and voice. The relational current.</p>
+    </div>
+    <div class="force">
+      <p class="force-name">Meaning</p>
+      <p class="force-desc">What gives the story weight beyond its events. The resonant layer.</p>
+    </div>
+    <div class="force">
+      <p class="force-name">Desire</p>
+      <p class="force-desc">What compels the reader to keep reading. The forward pull.</p>
+    </div>
+  </div>
+</section>
+
+<div class="s-divider layer"><div class="s-divider-line"></div></div>
+
+<section id="hearthprint" class="layer">
+  <p class="hearthprint-label reveal">The Hearthprint</p>
+  <h2 class="hearthprint-headline reveal">Every evaluation produces a document built for your manuscript alone.</h2>
+  <p class="hearthprint-sub reveal">A structural map showing how the four forces interact in your specific work — where they hold, where they fracture, and where they diverge from the form you are writing toward.</p>
+  <div class="hp-artifact reveal">
+    <div class="hp-top-row">
+      <span class="hp-press-mark">Ohana Belle Press &nbsp;·&nbsp; Hearthprint™</span>
+      <span class="hp-profile-badge">Magnetic Driver</span>
+    </div>
+    <div class="hp-title-block">
+      <p class="hp-ms-label">Manuscript</p>
+      <p class="hp-ms-title">Your Work, In Full</p>
+    </div>
+    <div class="hp-forces">
+      <div class="hp-force-row">
+        <span class="hp-force-name">Direction</span>
+        <div class="hp-bar-track"><div class="hp-bar-fill d"></div></div>
+      </div>
+      <div class="hp-force-row">
+        <span class="hp-force-name">Connection</span>
+        <div class="hp-bar-track"><div class="hp-bar-fill c"></div></div>
+      </div>
+      <div class="hp-force-row">
+        <span class="hp-force-name">Meaning</span>
+        <div class="hp-bar-track"><div class="hp-bar-fill m"></div></div>
+      </div>
+      <div class="hp-force-row">
+        <span class="hp-force-name">Desire</span>
+        <div class="hp-bar-track"><div class="hp-bar-fill des"></div></div>
+      </div>
+    </div>
+    <div class="hp-signature-block">
+      <span class="hp-sig-label">Core Constraint</span>
+      <span class="hp-redact">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </div>
+    <div style="margin-top:1rem;" class="hp-signature-block">
+      <span class="hp-sig-label">Narrative Unlock</span>
+      <span class="hp-redact">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </div>
+    <div style="margin-top:1rem;" class="hp-signature-block">
+      <span class="hp-sig-label">Form Vector</span>
+      <span class="hp-redact">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </div>
+    <span class="hp-watermark">Ohana Belle Press &nbsp;·&nbsp; Confidential</span>
+  </div>
+</section>
+
+<div class="s-divider layer"><div class="s-divider-line"></div></div>
+
+<section id="lead-magnet" class="layer">
+  <p class="lm-eyebrow">Not ready to apply?</p>
+  <h3 class="lm-headline">Read how the system identified Hurston's voice before you decide.</h3>
+  <p class="lm-sub">The NIM blind test: three chapters, no title, no author. Download the analysis and see exactly what the method found — and how.</p>
+  <form class="lm-form" name="hurston-pdf-request" data-netlify="true" netlify-honeypot="bot-field" id="lm-form">
+    <input type="hidden" name="form-name" value="hurston-pdf-request">
+    <input type="hidden" name="bot-field" style="display:none">
+    <input type="email" name="email" class="lm-input" placeholder="your@email.com" required>
+    <button type="submit" class="lm-submit">Send the PDF</button>
+  </form>
+  <p class="lm-note">No sequence. No pitch. One PDF, delivered once.</p>
+  <p class="lm-success" id="lm-success">Check your inbox. The analysis is on its way.</p>
+</section>
+
+<div class="s-divider layer"><div class="s-divider-line"></div></div>
+
+<section id="proof" class="layer">
+  <div class="inner" style="text-align:center;">
+    <p class="proof-label reveal">Proof of Perception</p>
+    <p class="proof-setup reveal">Three chapters. No title. No author.</p>
+    <p class="proof-claim reveal">Given only the opening of <em>Their Eyes Were Watching God,</em> the system identified the manuscript's structural form, its emotional register, and its governing voice — correctly, without prior knowledge of the text.</p>
+    <p class="proof-attribution reveal">Zora Neale Hurston &nbsp;·&nbsp; 1937</p>
+    <div class="proof-finding reveal">
+      <div class="proof-finding-item">
+        <div class="proof-finding-dot"></div>
+        <span>Form identified as lyric — not penalized for its absence of conventional escalation</span>
+      </div>
+      <div class="proof-finding-item">
+        <div class="proof-finding-dot"></div>
+        <span>Voice assessed as operating at its structural ceiling — a strength, not an outlier</span>
+      </div>
+      <div class="proof-finding-item">
+        <div class="proof-finding-dot"></div>
+        <span>Emotional register and tragic vector correctly named before the arc resolved</span>
+      </div>
+      <div class="proof-finding-item">
+        <div class="proof-finding-dot"></div>
+        <span>System hedged appropriately on structural convergence from three chapters alone, rather than guessing — that restraint is what makes the findings trustworthy</span>
+      </div>
+    </div>
+    <p class="proof-implication reveal">This is what it means for your manuscript: it will be read as what it is, not what it resembles.</p>
+  </div>
+</section>
+
+<div class="s-divider layer"><div class="s-divider-line"></div></div>
+
+<section id="transition" class="layer">
+  <p class="transition-line reveal">Most writers don't need more feedback.<br>They need to see <em>what their manuscript is doing.</em></p>
+</section>
+
+<section id="apply" class="layer">
+  <p class="apply-label reveal">Apply for Diagnostic Review</p>
+  <h2 class="apply-headline reveal">Choose your level of intelligence.</h2>
+  <p class="apply-sub reveal">NIM accepts applications, not open purchases. This ensures every diagnostic receives the attention it warrants. Payment is collected after acceptance.</p>
+  <p class="apply-model-note reveal">Applications are reviewed within 48 hours. Most are accepted.</p>
+
+  <div class="pricing-grid reveal">
+    <div class="pricing-card">
+      <p class="pricing-tier">Tier I &nbsp;·&nbsp; Snapshot</p>
+      <p class="pricing-price">$47</p>
+      <p class="pricing-name">Mini NIM Snapshot</p>
+      <p class="pricing-desc">A focused read on your opening chapter. Identifies the primary barrier to reader engagement and tells you the single most urgent thing to address.</p>
+      <ul class="pricing-includes">
+        <li>Hook and opening strength assessment</li>
+        <li>Voice distinctiveness read</li>
+        <li>Reader drop-off risk analysis</li>
+        <li>One priority fix, clearly stated</li>
+      </ul>
+      <button class="apply-btn" onclick="openForm('Tier I · Snapshot — $47')">Apply</button>
+    </div>
+    <div class="pricing-card featured">
+      <p class="pricing-featured-tag">Most Requested</p>
+      <p class="pricing-tier">Tier II &nbsp;·&nbsp; Full Diagnostic</p>
+      <p class="pricing-price">$147</p>
+      <p class="pricing-name">Full NIM Diagnostic</p>
+      <p class="pricing-desc">The complete evaluation. Every structural, emotional, and narrative dimension of your manuscript assessed across the full four-force system.</p>
+      <ul class="pricing-includes">
+        <li>Full four-force evaluation</li>
+        <li>Structural and pacing diagnosis</li>
+        <li>Market fit and reader segment read</li>
+        <li>Emotional impact and memorability score</li>
+        <li>Prioritized repair roadmap</li>
+        <li>Hearthprint clarity report</li>
+      </ul>
+      <button class="apply-btn" onclick="openForm('Tier II · Full Diagnostic — $147')">Apply for Review</button>
+    </div>
+    <div class="pricing-card">
+      <p class="pricing-tier">Tier III &nbsp;·&nbsp; Premium</p>
+      <p class="pricing-price">$297</p>
+      <p class="pricing-name">Premium Diagnostic</p>
+      <p class="pricing-desc">Everything in the Full Diagnostic, plus a written debrief that walks through each finding in context with specific, sequenced revision guidance.</p>
+      <ul class="pricing-includes">
+        <li>Complete Full NIM Diagnostic</li>
+        <li>Extended written debrief</li>
+        <li>Revision priority sequence</li>
+        <li>Fastest route to a stronger manuscript</li>
+      </ul>
+      <button class="apply-btn" onclick="openForm('Tier III · Premium Diagnostic — $297')">Apply</button>
+    </div>
+  </div>
+
+  <!-- APPLICATION FORM — Netlify-connected -->
+  <div id="application-form">
+    <form
+      name="nim-application"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      id="nim-form"
+    >
+      <input type="hidden" name="form-name" value="nim-application">
+      <input type="hidden" name="bot-field" style="display:none">
+      <input type="hidden" name="selected-tier" id="selected-tier-input">
+
+      <p class="form-title">Your Application</p>
+      <p class="form-selected-tier" id="form-tier-display"></p>
+
+      <div class="form-group">
+        <label class="form-label" for="full-name">Full Name</label>
+        <input class="form-input" type="text" id="full-name" name="full-name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <input class="form-input" type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="genre">Genre</label>
+        <select class="form-select" id="genre" name="genre" required>
+          <option value="" disabled selected>Select genre</option>
+          <option>Literary Fiction</option>
+          <option>Commercial Fiction</option>
+          <option>Thriller / Mystery</option>
+          <option>Science Fiction / Fantasy</option>
+          <option>Historical Fiction</option>
+          <option>Memoir / Creative Nonfiction</option>
+          <option>Hybrid / Experimental</option>
+          <option>Romance</option>
+          <option>Horror</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="drafts">Drafts Completed</label>
+        <select class="form-select" id="drafts" name="drafts" required>
+          <option value="" disabled selected>Select</option>
+          <option>1 draft</option>
+          <option>2 drafts</option>
+          <option>3 drafts</option>
+          <option>4 or more</option>
+          <option>Lost count</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What feels most frustrating right now?</label>
+        <div class="form-checkbox-group">
+          <label class="form-checkbox-label"><input type="checkbox" name="frustration" value="I don't know what's wrong."> I don't know what's wrong.</label>
+          <label class="form-checkbox-label"><input type="checkbox" name="frustration" value="I've revised forever and I'm still not sure."> I've revised forever and I'm still not sure.</label>
+          <label class="form-checkbox-label"><input type="checkbox" name="frustration" value="Feedback has been contradictory and I'm more confused than when I started."> Feedback has been contradictory and I'm more confused than when I started.</label>
+          <label class="form-checkbox-label"><input type="checkbox" name="frustration" value="I'm afraid of publishing or querying too early and damaging my credibility."> I'm afraid of publishing or querying too early and damaging my credibility.</label>
+          <label class="form-checkbox-label"><input type="checkbox" name="frustration" value="I need expert eyes before I move forward."> I need expert eyes before I move forward.</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="prior-feedback">Prior Outside Feedback</label>
+        <select class="form-select" id="prior-feedback" name="prior-feedback">
+          <option value="" disabled selected>Select</option>
+          <option>No, this would be my first</option>
+          <option>Yes, from beta readers</option>
+          <option>Yes, from a writing group</option>
+          <option>Yes, from a paid editor</option>
+          <option>Yes, from multiple sources</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="next-step">Next Intended Step</label>
+        <select class="form-select" id="next-step" name="next-step">
+          <option value="" disabled selected>Select</option>
+          <option>Query literary agents</option>
+          <option>Self-publish</option>
+          <option>Continue revising</option>
+          <option>Undecided</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="why-now">Why now?</label>
+        <p style="font-size:0.75rem;color:var(--text-low);margin-bottom:0.8rem;line-height:1.6;">This is the most important question on this form. Take your time with it.</p>
+        <textarea class="form-textarea" id="why-now" name="why-now" required></textarea>
+      </div>
+
+      <button type="submit" class="form-submit">Submit Application</button>
+      <p class="form-privacy">Your manuscript is never stored, shared, or used beyond your evaluation.<br>Handled with the same care given to unpublished work we ourselves would not release.<br>A confidentiality agreement is available on request.</p>
+    </form>
+
+    <div class="form-success" id="form-success">
+      <p class="form-success-title">Application Received.</p>
+      <p class="form-success-body">Thank you. Your application will be reviewed within 48 hours. You will hear from us at the address you provided. If you have questions in the meantime: <a href="mailto:LoveOhanaBelle@gmail.com" style="color:var(--ember-mid);">LoveOhanaBelle@gmail.com</a></p>
+    </div>
+  </div>
+</section>
+
+<footer class="layer">
+  <div class="footer-inner">
+    Ohana Belle Press &nbsp;·&nbsp; West Virginia<br>
+    Narrative Intelligence Method &nbsp;·&nbsp; Hearthprint™<br>
+    <a href="mailto:LoveOhanaBelle@gmail.com">LoveOhanaBelle@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const scrolled = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+reveals.forEach(r => observer.observe(r));
+
+// Bar animation
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.hp-bar-fill').forEach(b => b.classList.add('animate'));
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.hp-artifact').forEach(a => barObserver.observe(a));
+
+// Open application form
+function openForm(tier) {
+  const form = document.getElementById('application-form');
+  document.getElementById('form-tier-display').textContent = tier;
+  document.getElementById('selected-tier-input').value = tier;
+  form.classList.add('visible');
+  setTimeout(() => form.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+// Lead magnet form
+document.getElementById('lm-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = new FormData(this);
+  fetch('/', { method: 'POST', body: data })
+    .then(() => {
+      this.style.display = 'none';
+      document.querySelector('.lm-note').style.display = 'none';
+      document.getElementById('lm-success').classList.add('visible');
+    })
+    .catch(() => {
+      this.style.display = 'none';
+      document.getElementById('lm-success').classList.add('visible');
+    });
+});
+
+// Application form
+document.getElementById('nim-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = new FormData(this);
+  fetch('/', { method: 'POST', body: data })
+    .then(() => {
+      this.style.display = 'none';
+      document.getElementById('form-success').classList.add('visible');
+    })
+    .catch(() => {
+      this.style.display = 'none';
+      document.getElementById('form-success').classList.add('visible');
+    });
+});
+
+// Fire canvas
+const canvas = document.getElementById('fireCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function Particle() {
+  this.reset = function() {
+    this.x = Math.random() * W;
+    this.y = H + 10;
+    this.vx = (Math.random() - 0.5) * 0.8;
+    this.vy = -(Math.random() * 2.5 + 1.2);
+    this.life = 1;
+    this.decay = Math.random() * 0.008 + 0.004;
+    this.size = Math.random() * 3 + 1;
+    this.hue = Math.random() * 30 + 15;
+  };
+  this.reset();
+}
+
+for (let i = 0; i < 120; i++) {
+  const p = new Particle();
+  p.y = Math.random() * H;
+  p.life = Math.random();
+  particles.push(p);
+}
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life -= p.decay;
+    if (p.life <= 0) p.reset();
+    ctx.save();
+    ctx.globalAlpha = p.life * 0.6;
+    ctx.fillStyle = `hsl(${p.hue}, 85%, 55%)`;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>
