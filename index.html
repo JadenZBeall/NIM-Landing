@@ -5,27 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="A manuscript diagnostic for novelists who've revised endlessly and still don't know what's wrong. NIM identifies root causes, not symptoms.">
 <title>Ohana Belle Press · Narrative Intelligence Method</title>
-<link rel="icon" type="image/png" href="obp_favicon_32.png">
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+SC:wght@300;400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 
 <style>
-/* ── TOKENS ── */
 :root {
-  --ink:        #0e0c10;
+  --ink:        #1c1c18;
   --ink-lift:   #17141e;
   --ink-mid:    #211d28;
   --parchment:  #e8dfc8;
   --parchment-dim: #a89e88;
   --bone:       #f2ece0;
-  --cognac:     #8b5e3c;
-  --cognac-lt:  #c4894f;
+  --cognac:     #cc8d50;
+  --cognac-dk:  #8b5e3c;
+  --cognac-lt:  #e0a96d;
   --smoke:      #3d3848;
   --smoke-lt:   #585260;
   --page-max:   900px;
 }
 
-/* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
 
@@ -37,7 +36,6 @@ body {
   line-height: 1.9;
 }
 
-/* grain */
 body::before {
   content: '';
   position: fixed;
@@ -49,7 +47,6 @@ body::before {
   z-index: 900;
 }
 
-/* ── LAYOUT ── */
 .wrap { max-width: var(--page-max); margin: 0 auto; padding: 0 2rem; }
 
 /* ── NAV ── */
@@ -61,7 +58,7 @@ nav {
   border-bottom: 1px solid var(--smoke);
   position: sticky;
   top: 0;
-  background: rgba(14,12,16,0.96);
+  background: rgba(28,28,24,0.96);
   backdrop-filter: blur(8px);
   z-index: 100;
 }
@@ -73,11 +70,7 @@ nav {
   text-decoration: none;
 }
 
-.nav-mark img {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-}
+.nav-mark img { width: 36px; height: 36px; object-fit: contain; border-radius: 50%; }
 
 .nav-press-name {
   font-family: 'Crimson Pro', serif;
@@ -104,16 +97,12 @@ nav {
   letter-spacing: 0.25em;
   color: var(--cognac-lt);
   text-decoration: none;
-  border: 1px solid var(--cognac);
+  border: 1px solid var(--cognac-dk);
   padding: 0.55em 1.2em;
   border-radius: 2px;
   transition: background 0.2s ease, color 0.2s ease;
 }
-
-.nav-cta:hover {
-  background: var(--cognac);
-  color: var(--bone);
-}
+.nav-cta:hover { background: var(--cognac-dk); color: var(--bone); }
 
 /* ── HERO ── */
 .hero {
@@ -132,10 +121,7 @@ nav {
   .hero-image-col { order: -1; }
 }
 
-.hero-image-col {
-  display: flex;
-  justify-content: center;
-}
+.hero-image-col { display: flex; justify-content: center; }
 
 .hero-image-col img {
   width: 100%;
@@ -143,9 +129,8 @@ nav {
   height: auto;
   display: block;
   border-radius: 50%;
+  box-shadow: 0 0 80px rgba(204,141,80,0.12);
 }
-
-.hero-text {}
 
 .hero-eyebrow {
   font-family: 'Cormorant SC', serif;
@@ -166,10 +151,7 @@ nav {
   margin-bottom: 1.5rem;
 }
 
-.hero-headline em {
-  font-style: italic;
-  color: var(--cognac-lt);
-}
+.hero-headline em { font-style: italic; color: var(--cognac-lt); }
 
 .hero-body {
   font-size: 1rem;
@@ -179,26 +161,20 @@ nav {
   max-width: 44ch;
 }
 
-.hero-actions {
-  display: flex;
-  gap: 1.2rem;
-  flex-wrap: wrap;
-  align-items: center;
-}
+.hero-actions { display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: center; }
 
 .btn-primary {
   font-family: 'Cormorant SC', serif;
   font-size: 0.62rem;
   letter-spacing: 0.25em;
   color: var(--bone);
-  background: var(--cognac);
-  border: 1px solid var(--cognac);
+  background: var(--cognac-dk);
+  border: 1px solid var(--cognac-dk);
   padding: 0.8em 2em;
   border-radius: 2px;
   text-decoration: none;
   transition: background 0.2s ease;
 }
-
 .btn-primary:hover { background: #7a5234; }
 
 .btn-ghost {
@@ -211,26 +187,11 @@ nav {
   padding-bottom: 0.1em;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
-
 .btn-ghost:hover { color: var(--parchment); border-color: var(--parchment-dim); }
 
-/* ── DIVIDER ── */
-.ornament {
-  text-align: center;
-  color: var(--cognac);
-  font-size: 0.8rem;
-  letter-spacing: 0.9em;
-  opacity: 0.4;
-  padding: 1rem 0;
-}
-
-.section-rule {
-  border: none;
-  border-top: 1px solid var(--smoke);
-  margin: 0;
-}
-
 /* ── SECTIONS ── */
+.section-rule { border: none; border-top: 1px solid var(--smoke); margin: 0; }
+
 .section {
   padding: 6rem 2rem;
   max-width: var(--page-max);
@@ -265,33 +226,19 @@ nav {
   margin-bottom: 3rem;
 }
 
-/* ── PROBLEM SECTION ── */
+/* ── PROBLEM ── */
 .problem-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: start;
 }
-
 @media (max-width: 620px) { .problem-grid { grid-template-columns: 1fr; gap: 2rem; } }
 
-.problem-body {
-  font-size: 0.95rem;
-  color: var(--parchment-dim);
-  line-height: 1.95;
-}
-
+.problem-body { font-size: 0.95rem; color: var(--parchment-dim); line-height: 1.95; }
 .problem-body p { margin-bottom: 1.4rem; }
 .problem-body p:last-child { margin-bottom: 0; }
-
-.problem-body strong {
-  color: var(--parchment);
-  font-weight: 400;
-}
-
-.problem-aside {
-  padding-top: 0.4rem;
-}
+.problem-body strong { color: var(--parchment); font-weight: 400; }
 
 .pullquote {
   font-family: 'IM Fell English', serif;
@@ -303,45 +250,19 @@ nav {
   padding-left: 1.5rem;
 }
 
-/* ── FOUR FORCES ── */
+/* ── FORCES ── */
 .forces-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2.5rem 3rem;
   margin-top: 2rem;
 }
-
 @media (max-width: 560px) { .forces-grid { grid-template-columns: 1fr; } }
 
-.force-block {
-  border-top: 1px solid var(--smoke);
-  padding-top: 1.5rem;
-}
-
-.force-name {
-  font-family: 'Crimson Pro', serif;
-  font-weight: 400;
-  font-size: 1.15rem;
-  color: var(--bone);
-  display: block;
-  margin-bottom: 0.4rem;
-  letter-spacing: 0.04em;
-}
-
-.force-label {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.56rem;
-  letter-spacing: 0.28em;
-  color: var(--cognac-lt);
-  display: block;
-  margin-bottom: 0.8rem;
-}
-
-.force-desc {
-  font-size: 0.88rem;
-  color: var(--parchment-dim);
-  line-height: 1.8;
-}
+.force-block { border-top: 1px solid var(--smoke); padding-top: 1.5rem; }
+.force-name { font-family: 'Crimson Pro', serif; font-weight: 400; font-size: 1.15rem; color: var(--bone); display: block; margin-bottom: 0.4rem; letter-spacing: 0.04em; }
+.force-label { font-family: 'Cormorant SC', serif; font-size: 0.56rem; letter-spacing: 0.28em; color: var(--cognac-lt); display: block; margin-bottom: 0.8rem; }
+.force-desc { font-size: 0.88rem; color: var(--parchment-dim); line-height: 1.8; }
 
 /* ── HEARTHPRINT PREVIEW ── */
 .hearthprint-preview {
@@ -362,132 +283,38 @@ nav {
   border-bottom: 1px solid var(--smoke);
 }
 
-.hp-press {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.56rem;
-  letter-spacing: 0.28em;
-  color: var(--cognac-lt);
-  display: block;
-}
+.hp-press { font-family: 'Cormorant SC', serif; font-size: 0.56rem; letter-spacing: 0.28em; color: var(--cognac-lt); display: block; }
+.hp-title { font-family: 'Crimson Pro', serif; font-weight: 400; font-size: 1rem; color: var(--bone); display: block; margin-top: 0.3rem; }
+.hp-profile { font-family: 'Cormorant SC', serif; font-size: 0.58rem; letter-spacing: 0.2em; color: var(--cognac-lt); text-align: right; }
 
-.hp-title {
-  font-family: 'Crimson Pro', serif;
-  font-weight: 400;
-  font-size: 1rem;
-  color: var(--bone);
-  display: block;
-  margin-top: 0.3rem;
-}
+.hp-force-row { margin-bottom: 1.1rem; }
+.hp-force-label { display: flex; justify-content: space-between; margin-bottom: 0.35rem; }
+.hp-force-name { font-family: 'Cormorant SC', serif; font-size: 0.58rem; letter-spacing: 0.2em; color: var(--parchment-dim); }
+.hp-force-tag { font-family: 'Cormorant SC', serif; font-size: 0.52rem; letter-spacing: 0.15em; color: var(--cognac-lt); }
+.hp-bar-track { height: 3px; background: var(--smoke); border-radius: 2px; overflow: hidden; }
+.hp-bar-fill { height: 100%; background: var(--cognac); border-radius: 2px; }
 
-.hp-profile {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.58rem;
-  letter-spacing: 0.2em;
-  color: var(--cognac-lt);
-  text-align: right;
-}
-
-.hp-force-row {
-  margin-bottom: 1.1rem;
-}
-
-.hp-force-label {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.35rem;
-}
-
-.hp-force-name {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.58rem;
-  letter-spacing: 0.2em;
-  color: var(--parchment-dim);
-}
-
-.hp-force-tag {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.52rem;
-  letter-spacing: 0.15em;
-  color: var(--cognac-lt);
-}
-
-.hp-bar-track {
-  height: 3px;
-  background: var(--smoke);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.hp-bar-fill {
-  height: 100%;
-  background: var(--cognac);
-  border-radius: 2px;
-}
-
-.hp-redacted {
-  background: var(--smoke);
-  height: 0.7rem;
-  border-radius: 1px;
-  margin-top: 1.5rem;
-  opacity: 0.5;
-}
-
+.hp-redacted { background: var(--smoke); height: 0.7rem; border-radius: 1px; margin-top: 1.5rem; opacity: 0.5; }
 .hp-redacted + .hp-redacted { margin-top: 0.5rem; width: 70%; }
 
-.hp-footer {
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--smoke);
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.5rem;
-  letter-spacing: 0.22em;
-  color: var(--smoke-lt);
-  text-align: center;
-}
+.hp-footer { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--smoke); font-family: 'Cormorant SC', serif; font-size: 0.5rem; letter-spacing: 0.22em; color: var(--smoke-lt); text-align: center; }
 
-/* ── HURSTON PROOF ── */
+/* ── PROOF ── */
 .proof-block {
   background: var(--ink-lift);
   border-left: 2px solid var(--cognac);
-  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+  padding: 2.5rem;
   border-radius: 0 3px 3px 0;
   margin-top: 2rem;
 }
 
-.proof-findings {
-  list-style: none;
-  margin-top: 1.5rem;
-}
-
-.proof-findings li {
-  font-size: 0.88rem;
-  color: var(--parchment-dim);
-  line-height: 1.8;
-  padding: 0.7rem 0;
-  border-bottom: 1px solid var(--smoke);
-  padding-left: 1.2rem;
-  position: relative;
-}
-
-.proof-findings li::before {
-  content: '·';
-  color: var(--cognac);
-  position: absolute;
-  left: 0;
-}
-
+.proof-findings { list-style: none; margin-top: 1.5rem; }
+.proof-findings li { font-size: 0.88rem; color: var(--parchment-dim); line-height: 1.8; padding: 0.7rem 0 0.7rem 1.2rem; border-bottom: 1px solid var(--smoke); position: relative; }
+.proof-findings li::before { content: '·'; color: var(--cognac); position: absolute; left: 0; }
 .proof-findings li:last-child { border-bottom: none; }
+.proof-source { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.82rem; color: var(--parchment-dim); margin-top: 1.5rem; display: block; }
 
-.proof-source {
-  font-family: 'IM Fell English', serif;
-  font-style: italic;
-  font-size: 0.82rem;
-  color: var(--parchment-dim);
-  margin-top: 1.5rem;
-  display: block;
-}
-
-/* ── LEAD MAGNET ── */
+/* ── KIT LEAD MAGNET ── */
 .magnet-block {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -495,52 +322,11 @@ nav {
   align-items: center;
   margin-top: 2rem;
 }
-
 @media (max-width: 580px) { .magnet-block { grid-template-columns: 1fr; } }
 
-.magnet-text {}
-
-.magnet-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.magnet-form input {
-  background: var(--ink-mid);
-  border: 1px solid var(--smoke);
-  color: var(--parchment);
-  padding: 0.75rem 1rem;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.92rem;
-  border-radius: 2px;
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.magnet-form input::placeholder { color: var(--smoke-lt); }
-.magnet-form input:focus { border-color: var(--cognac); }
-
-.magnet-form button {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.6rem;
-  letter-spacing: 0.25em;
-  color: var(--bone);
-  background: var(--cognac);
-  border: none;
-  padding: 0.85em 1.5em;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.magnet-form button:hover { background: #7a5234; }
-
-.magnet-note {
-  font-size: 0.72rem;
-  color: var(--smoke-lt);
-  margin-top: 0.3rem;
-}
+/* Kit form overrides to match brand */
+.kit-form-wrapper { width: 100%; }
+.kit-form-wrapper form { display: flex; flex-direction: column; gap: 0.8rem; }
 
 /* ── PRICING ── */
 .pricing-grid {
@@ -549,75 +335,18 @@ nav {
   gap: 1.5rem;
   margin-top: 2rem;
 }
-
 @media (max-width: 700px) { .pricing-grid { grid-template-columns: 1fr; } }
 
-.tier {
-  border: 1px solid var(--smoke);
-  border-radius: 3px;
-  padding: 2rem 1.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  transition: border-color 0.25s ease;
-}
+.tier { border: 1px solid var(--smoke); border-radius: 3px; padding: 2rem 1.8rem; display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.25s ease; }
+.tier:hover { border-color: var(--cognac-dk); }
+.tier.featured { border-color: var(--cognac-dk); background: var(--ink-lift); }
 
-.tier:hover { border-color: var(--cognac); }
-
-.tier.featured {
-  border-color: var(--cognac);
-  background: var(--ink-lift);
-}
-
-.tier-badge {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.52rem;
-  letter-spacing: 0.28em;
-  color: var(--cognac-lt);
-  display: block;
-}
-
-.tier.featured .tier-badge { color: var(--cognac-lt); }
-
-.tier-name {
-  font-family: 'Crimson Pro', serif;
-  font-weight: 400;
-  font-size: 1.15rem;
-  color: var(--bone);
-  display: block;
-  margin-top: 0.2rem;
-}
-
-.tier-price {
-  font-family: 'Crimson Pro', serif;
-  font-weight: 300;
-  font-size: 2.2rem;
-  color: var(--bone);
-  line-height: 1;
-}
-
-.tier-price sup {
-  font-size: 1rem;
-  vertical-align: super;
-  color: var(--parchment-dim);
-}
-
-.tier-desc {
-  font-size: 0.82rem;
-  color: var(--parchment-dim);
-  line-height: 1.75;
-  border-top: 1px solid var(--smoke);
-  padding-top: 1rem;
-}
-
-.tier-features {
-  list-style: none;
-  font-size: 0.8rem;
-  color: var(--parchment-dim);
-  line-height: 1.9;
-  flex: 1;
-}
-
+.tier-badge { font-family: 'Cormorant SC', serif; font-size: 0.52rem; letter-spacing: 0.28em; color: var(--cognac-lt); display: block; }
+.tier-name { font-family: 'Crimson Pro', serif; font-weight: 400; font-size: 1.15rem; color: var(--bone); display: block; margin-top: 0.2rem; }
+.tier-price { font-family: 'Crimson Pro', serif; font-weight: 300; font-size: 2.2rem; color: var(--bone); line-height: 1; }
+.tier-price sup { font-size: 1rem; vertical-align: super; color: var(--parchment-dim); }
+.tier-desc { font-size: 0.82rem; color: var(--parchment-dim); line-height: 1.75; border-top: 1px solid var(--smoke); padding-top: 1rem; }
+.tier-features { list-style: none; font-size: 0.8rem; color: var(--parchment-dim); line-height: 1.9; flex: 1; }
 .tier-features li::before { content: '· '; color: var(--cognac); }
 
 .tier-btn {
@@ -634,43 +363,18 @@ nav {
   transition: border-color 0.2s ease, color 0.2s ease;
   margin-top: auto;
 }
-
 .tier-btn:hover { border-color: var(--cognac-lt); color: var(--bone); }
-
-.tier.featured .tier-btn {
-  background: var(--cognac);
-  border-color: var(--cognac);
-  color: var(--bone);
-}
-
+.tier.featured .tier-btn { background: var(--cognac-dk); border-color: var(--cognac-dk); color: var(--bone); }
 .tier.featured .tier-btn:hover { background: #7a5234; }
 
 /* ── APPLICATION FORM ── */
-.apply-section {
-  padding: 6rem 2rem;
-  max-width: var(--page-max);
-  margin: 0 auto;
-}
+.apply-section { padding: 6rem 2rem; max-width: var(--page-max); margin: 0 auto; }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
 @media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } }
-
 .form-full { grid-column: 1 / -1; }
 
-.field label {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.56rem;
-  letter-spacing: 0.28em;
-  color: var(--parchment-dim);
-  display: block;
-  margin-bottom: 0.4rem;
-}
+.field label { font-family: 'Cormorant SC', serif; font-size: 0.56rem; letter-spacing: 0.28em; color: var(--parchment-dim); display: block; margin-bottom: 0.4rem; }
 
 .field input,
 .field select,
@@ -698,56 +402,26 @@ nav {
 
 .field input::placeholder,
 .field textarea::placeholder { color: var(--smoke-lt); }
-
 .field input:focus,
 .field select:focus,
 .field textarea:focus { border-color: var(--cognac); }
-
 .field textarea { resize: vertical; min-height: 120px; line-height: 1.7; }
 
-.frustrations-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  margin-top: 0.4rem;
-}
-
+.frustrations-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.4rem; }
 @media (max-width: 480px) { .frustrations-grid { grid-template-columns: 1fr; } }
 
-.frustration-opt {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7rem;
-  cursor: pointer;
-}
+.frustration-opt { display: flex; align-items: flex-start; gap: 0.7rem; cursor: pointer; }
+.frustration-opt input[type="checkbox"] { width: auto; margin-top: 0.25rem; accent-color: var(--cognac); cursor: pointer; flex-shrink: 0; }
+.frustration-opt span { font-size: 0.82rem; color: var(--parchment-dim); line-height: 1.5; }
 
-.frustration-opt input[type="checkbox"] {
-  width: auto;
-  margin-top: 0.25rem;
-  accent-color: var(--cognac);
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.frustration-opt span {
-  font-size: 0.82rem;
-  color: var(--parchment-dim);
-  line-height: 1.5;
-}
-
-.form-submit-row {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
+.form-submit-row { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.8rem; }
 
 .btn-submit {
   font-family: 'Cormorant SC', serif;
   font-size: 0.65rem;
   letter-spacing: 0.28em;
   color: var(--bone);
-  background: var(--cognac);
+  background: var(--cognac-dk);
   border: none;
   padding: 1em 2.5em;
   border-radius: 2px;
@@ -755,39 +429,12 @@ nav {
   align-self: flex-start;
   transition: background 0.2s ease;
 }
-
 .btn-submit:hover { background: #7a5234; }
 
-.form-privacy {
-  font-size: 0.75rem;
-  color: var(--smoke-lt);
-  line-height: 1.7;
-  max-width: 52ch;
-}
-
-/* ── SUCCESS MESSAGE ── */
-.form-success {
-  display: none;
-  padding: 2rem;
-  border: 1px solid var(--cognac);
-  border-radius: 3px;
-  background: var(--ink-lift);
-  margin-top: 1rem;
-}
-
-.form-success p {
-  font-size: 0.9rem;
-  color: var(--parchment);
-  line-height: 1.8;
-}
-
-.form-success a { color: var(--cognac-lt); }
+.form-privacy { font-size: 0.75rem; color: var(--smoke-lt); line-height: 1.7; max-width: 52ch; }
 
 /* ── FOOTER ── */
-footer {
-  border-top: 1px solid var(--smoke);
-  padding: 4rem 2rem;
-}
+footer { border-top: 1px solid var(--smoke); padding: 4rem 2rem; }
 
 .footer-inner {
   max-width: var(--page-max);
@@ -797,47 +444,14 @@ footer {
   gap: 3rem;
   align-items: start;
 }
-
 @media (max-width: 560px) { .footer-inner { grid-template-columns: 1fr; } }
 
-.footer-mark {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.2rem;
-}
-
-.footer-mark img { width: 48px; height: 48px; object-fit: contain; }
-
-.footer-name {
-  font-family: 'Crimson Pro', serif;
-  font-weight: 400;
-  font-size: 1.1rem;
-  color: var(--bone);
-  display: block;
-  letter-spacing: 0.06em;
-}
-
-.footer-sub {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.52rem;
-  letter-spacing: 0.28em;
-  color: var(--cognac-lt);
-  display: block;
-  margin-top: 0.2rem;
-}
-
-.footer-body {
-  font-size: 0.8rem;
-  color: var(--smoke-lt);
-  line-height: 1.9;
-}
-
-.footer-body a {
-  color: var(--parchment-dim);
-  text-decoration: none;
-}
-
+.footer-mark { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+.footer-mark img { width: 56px; height: 56px; object-fit: contain; border-radius: 50%; }
+.footer-name { font-family: 'Crimson Pro', serif; font-weight: 400; font-size: 1.1rem; color: var(--bone); display: block; letter-spacing: 0.06em; }
+.footer-sub { font-family: 'Cormorant SC', serif; font-size: 0.52rem; letter-spacing: 0.28em; color: var(--cognac-lt); display: block; margin-top: 0.2rem; }
+.footer-body { font-size: 0.8rem; color: var(--smoke-lt); line-height: 1.9; }
+.footer-body a { color: var(--parchment-dim); text-decoration: none; }
 .footer-body a:hover { color: var(--parchment); }
 
 .footer-colophon {
@@ -845,25 +459,39 @@ footer {
   font-style: italic;
   font-size: 0.78rem;
   color: var(--smoke-lt);
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--smoke);
+  text-align: center;
+  max-width: var(--page-max);
+  margin-left: auto;
+  margin-right: auto;
 }
-
-/* ── UTILITIES ── */
-.text-cognac { color: var(--cognac-lt); }
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-3 { margin-top: 1.5rem; }
 </style>
 </head>
 
 <body>
 
+<!-- Netlify form detection -->
+<form name="nim-application" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="name">
+  <input type="email" name="email">
+  <input type="text" name="genre">
+  <input type="text" name="drafts">
+  <input type="text" name="frustration">
+  <input type="text" name="prior-feedback">
+  <input type="text" name="next-step">
+  <textarea name="why-now"></textarea>
+</form>
+
+<form name="hurston-pdf-request" netlify netlify-honeypot="bot-field" hidden>
+  <input type="email" name="email">
+</form>
+
 <!-- ── NAV ── -->
 <nav>
   <a class="nav-mark" href="#">
-    <img src="obp_favicon_512.png" alt="Ohana Belle Press mark">
+    <img src="favicon.png" alt="Ohana Belle Press">
     <div>
       <span class="nav-press-name">Ohana Belle Press</span>
       <span class="nav-press-sub">Narrative Intelligence Method</span>
@@ -871,7 +499,6 @@ footer {
   </a>
   <a class="nav-cta" href="#apply">Apply for Review</a>
 </nav>
-
 
 <!-- ── HERO ── -->
 <section class="hero">
@@ -885,7 +512,7 @@ footer {
     </div>
   </div>
   <div class="hero-image-col">
-    <img src="obp_hero_dark_800.png" alt="Ohana Belle Press">
+    <img src="4220.jpg" alt="Ohana Belle Press">
   </div>
 </section>
 
@@ -902,7 +529,7 @@ footer {
       <p>A lyric novel is not a failed thriller. A hybrid memoir is not a broken narrative nonfiction. Every form has its own internal logic. When that logic is evaluated against a generic model, the diagnosis is always slightly wrong. The revision notes point to symptoms. The structure beneath them stays invisible.</p>
       <p>NIM evaluates your manuscript against its declared form. What it finds is not what is wrong with your writing. It is what your writing is actually doing — and where that diverges from what the form requires.</p>
     </div>
-    <div class="problem-aside">
+    <div>
       <p class="pullquote">"The revision notes point to symptoms. The structure beneath them stays invisible."</p>
     </div>
   </div>
@@ -912,7 +539,7 @@ footer {
 <section class="section" id="method">
   <span class="section-label">The Method</span>
   <h2 class="section-heading">A structured system that reads the manuscript, not the reputation.</h2>
-  <p class="section-intro">The Narrative Intelligence Method identifies the active forces already present in your writing: how the narrative moves, how attachment is built, how meaning accumulates, what sustains attention over time. These forces are mapped against each other — not against an external checklist — to surface alignment, tension, and structural blind spots that are invisible from inside the work.</p>
+  <p class="section-intro">The Narrative Intelligence Method identifies the active forces already present in your writing: how the narrative moves, how attachment is built, how meaning accumulates, what sustains attention over time. These forces are mapped against each other — not against an external checklist — to surface alignment, tension, and structural blind spots invisible from inside the work.</p>
 
   <div class="forces-grid">
     <div class="force-block">
@@ -948,44 +575,29 @@ footer {
     <div class="hp-header">
       <div>
         <span class="hp-press">Ohana Belle Press · Hearthprint™</span>
-        <span class="hp-title">Your Manuscript</span>
+        <span class="hp-title">Sample Evaluation</span>
       </div>
       <span class="hp-profile">Magnetic Driver</span>
     </div>
-
     <div class="hp-force-row">
-      <div class="hp-force-label">
-        <span class="hp-force-name">Direction</span>
-        <span class="hp-force-tag">Purposeful</span>
-      </div>
+      <div class="hp-force-label"><span class="hp-force-name">Direction</span><span class="hp-force-tag">Purposeful</span></div>
       <div class="hp-bar-track"><div class="hp-bar-fill" style="width:72%"></div></div>
     </div>
     <div class="hp-force-row">
-      <div class="hp-force-label">
-        <span class="hp-force-name">Connection</span>
-        <span class="hp-force-tag">Immersive</span>
-      </div>
+      <div class="hp-force-label"><span class="hp-force-name">Connection</span><span class="hp-force-tag">Immersive</span></div>
       <div class="hp-bar-track"><div class="hp-bar-fill" style="width:93%"></div></div>
     </div>
     <div class="hp-force-row">
-      <div class="hp-force-label">
-        <span class="hp-force-name">Meaning</span>
-        <span class="hp-force-tag">Immersive</span>
-      </div>
+      <div class="hp-force-label"><span class="hp-force-name">Meaning</span><span class="hp-force-tag">Immersive</span></div>
       <div class="hp-bar-track"><div class="hp-bar-fill" style="width:97%"></div></div>
     </div>
     <div class="hp-force-row">
-      <div class="hp-force-label">
-        <span class="hp-force-name">Desire</span>
-        <span class="hp-force-tag">Immersive</span>
-      </div>
+      <div class="hp-force-label"><span class="hp-force-name">Desire</span><span class="hp-force-tag">Immersive</span></div>
       <div class="hp-bar-track"><div class="hp-bar-fill" style="width:90%"></div></div>
     </div>
-
     <div class="hp-redacted"></div>
     <div class="hp-redacted"></div>
-
-    <div class="hp-footer">Ohana Belle Press · Confidential</div>
+    <div class="hp-footer">Ohana Belle Press · Confidential · Hearthprint™</div>
   </div>
 </section>
 
@@ -1007,22 +619,18 @@ footer {
   </div>
 </section>
 
-<!-- ── LEAD MAGNET ── -->
+<!-- ── LEAD MAGNET / KIT FORM ── -->
 <section class="section" id="pdf">
   <span class="section-label">Read the Evidence First</span>
   <div class="magnet-block">
-    <div class="magnet-text">
+    <div>
       <h2 class="section-heading" style="margin-bottom:0.8rem;">Not ready to apply?</h2>
-      <p class="section-intro" style="margin-bottom:0;">Read how the system identified Hurston's voice before you decide. The NIM blind test: three chapters, no title, no author. Download the analysis and see exactly what the method found — and how.</p>
-      <p style="font-size:0.78rem; color:var(--smoke-lt); margin-top:1rem;">No sequence. No pitch. One PDF, delivered once.</p>
+      <p class="section-intro" style="margin-bottom:0;">Read how the system identified Hurston's voice before you decide. Three chapters, no title, no author. Download the analysis and see exactly what the method found.</p>
+      <p style="font-size:0.78rem; color:var(--smoke-lt); margin-top:1rem;">One email. The PDF. Nothing else.</p>
     </div>
-    <div class="magnet-form">
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" placeholder="your@email.com" name="email">
-      </div>
-      <button type="button">Send the PDF</button>
-      <p class="magnet-note">One email. The PDF. Nothing else.</p>
+    <div class="kit-form-wrapper">
+      <!-- Kit form embed — form ID 9409442 -->
+      <script async data-uid="910dbe58e7" src="https://ohana-belle-press.ck.page/910dbe58e7/index.js"></script>
     </div>
   </div>
 </section>
@@ -1041,14 +649,14 @@ footer {
         <span class="tier-name">Mini NIM Snapshot</span>
       </div>
       <div class="tier-price"><sup>$</sup>47</div>
-      <p class="tier-desc">A focused read on your opening chapter. Identifies the primary barrier to reader engagement and the single most urgent thing to address.</p>
+      <p class="tier-desc">A focused read on your opening chapters. Identifies the primary barrier to reader engagement and the single most urgent thing to address.</p>
       <ul class="tier-features">
         <li>Hook and opening strength assessment</li>
         <li>Voice distinctiveness read</li>
         <li>Reader drop-off risk analysis</li>
         <li>One priority fix, clearly stated</li>
       </ul>
-      <a class="tier-btn" href="https://paypal.com/ncp/payment/DGQ6KQSAZUB7U">Apply</a>
+      <a class="tier-btn" href="https://buy.stripe.com/aFa7sMa2GdYj9bC26k0Fi00">Apply — $47</a>
     </div>
 
     <div class="tier featured">
@@ -1066,7 +674,7 @@ footer {
         <li>Prioritized repair roadmap</li>
         <li>Hearthprint clarity report</li>
       </ul>
-      <a class="tier-btn" href="https://paypal.com/ncp/payment/NVBXHVJJGZZLC">Apply for Review</a>
+      <a class="tier-btn" href="https://buy.stripe.com/eVq5kEgr44nJdrS12g0Fi01">Apply — $147</a>
     </div>
 
     <div class="tier">
@@ -1082,7 +690,7 @@ footer {
         <li>Revision priority sequence</li>
         <li>Fastest route to a stronger manuscript</li>
       </ul>
-      <a class="tier-btn" href="#apply">Apply</a>
+      <a class="tier-btn" href="https://buy.stripe.com/28EfZi2AedYj5Zq26k0Fi02">Apply — $297</a>
     </div>
 
   </div>
@@ -1092,9 +700,9 @@ footer {
 <section class="apply-section" id="apply">
   <span class="section-label">Your Application</span>
   <h2 class="section-heading">Apply for Diagnostic Review</h2>
-  <p class="section-intro">Most writers don't need more feedback. They need to see <em>what their manuscript is doing.</em></p>
+  <p class="section-intro" style="margin-bottom:2rem;">Most writers don't need more feedback. They need to see <em>what their manuscript is doing.</em></p>
 
-  <form name="nim-application" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+  <form name="nim-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/confirmed.html">
     <input type="hidden" name="form-name" value="nim-application">
     <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
 
@@ -1139,8 +747,8 @@ footer {
         <div class="frustrations-grid">
           <label class="frustration-opt"><input type="checkbox" name="frustration" value="dont-know-whats-wrong"><span>I don't know what's wrong.</span></label>
           <label class="frustration-opt"><input type="checkbox" name="frustration" value="revised-forever"><span>I've revised forever and I'm still not sure.</span></label>
-          <label class="frustration-opt"><input type="checkbox" name="frustration" value="contradictory-feedback"><span>Feedback has been contradictory and I'm more confused.</span></label>
-          <label class="frustration-opt"><input type="checkbox" name="frustration" value="credibility"><span>I'm afraid of publishing or querying too early.</span></label>
+          <label class="frustration-opt"><input type="checkbox" name="frustration" value="contradictory-feedback"><span>Feedback has been contradictory.</span></label>
+          <label class="frustration-opt"><input type="checkbox" name="frustration" value="credibility"><span>Afraid of publishing or querying too early.</span></label>
           <label class="frustration-opt"><input type="checkbox" name="frustration" value="expert-eyes"><span>I need expert eyes before I move forward.</span></label>
         </div>
       </div>
@@ -1166,7 +774,7 @@ footer {
         </select>
       </div>
       <div class="field form-full">
-        <label>Why now? <span style="color:var(--smoke-lt); letter-spacing:0.1em; font-size:0.9em;">(This is the most important question on this form. Take your time.)</span></label>
+        <label>Why now? <span style="color:var(--smoke-lt); font-size:0.9em;">(This is the most important question on this form.)</span></label>
         <textarea name="why-now" placeholder="Tell us what brought you here." required></textarea>
       </div>
     </div>
@@ -1178,13 +786,12 @@ footer {
   </form>
 </section>
 
-
 <!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
     <div>
       <div class="footer-mark">
-        <img src="obp_colophon_mark_500.png" alt="Ohana Belle Press">
+        <img src="4220.jpg" alt="Ohana Belle Press">
         <div>
           <span class="footer-name">Ohana Belle Press</span>
           <span class="footer-sub">West Virginia · Est. 2025</span>
@@ -1200,9 +807,7 @@ footer {
       <p class="footer-body">Applications reviewed within 48 hours.<br>Questions: <a href="mailto:LoveOhanaBelle@gmail.com">LoveOhanaBelle@gmail.com</a></p>
     </div>
   </div>
-  <div class="wrap">
-    <p class="footer-colophon" style="text-align:center; margin-top:2rem;">Built in West Virginia. Named for a dog. Serious about the work.</p>
-  </div>
+  <p class="footer-colophon">Built in West Virginia. Named for a dog. Serious about the work.</p>
 </footer>
 
 </body>
