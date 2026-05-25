@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ohana Belle Press · You're confirmed</title>
+<link rel="icon" type="image/png" href="obp_favicon_32_banner.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+SC:wght@300;400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:        #1c1c18;
+  --ink-lift:   #17141e;
+  --parchment:  #e8dfc8;
+  --parchment-dim: #a89e88;
+  --bone:       #f2ece0;
+  --cognac:     #cc8d50;
+  --cognac-dk:  #8b5e3c;
+  --cognac-lt:  #e0a96d;
+  --smoke:      #3d3848;
+  --smoke-lt:   #585260;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+
+body {
+  background: var(--ink);
+  color: var(--parchment);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  line-height: 1.9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.055;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  z-index: 900;
+}
+
+/* ── NAV ── */
+nav {
+  padding: 1.8rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--smoke);
+  background: rgba(28,28,24,0.96);
+  backdrop-filter: blur(8px);
+}
+
+.nav-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  text-decoration: none;
+}
+
+.nav-mark img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.nav-press-name {
+  font-family: 'Crimson Pro', serif;
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: var(--bone);
+  line-height: 1;
+  display: block;
+}
+
+.nav-press-sub {
+  font-family: 'Cormorant SC', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.3em;
+  color: var(--cognac-lt);
+  display: block;
+  margin-top: 0.2rem;
+}
+
+/* ── MAIN ── */
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+}
+
+.confirmed-block {
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+}
+
+.confirmed-mark {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.confirmed-eyebrow {
+  font-family: 'Cormorant SC', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.38em;
+  color: var(--cognac-lt);
+  display: block;
+  margin-bottom: 1.2rem;
+}
+
+.confirmed-heading {
+  font-family: 'Crimson Pro', serif;
+  font-weight: 400;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: var(--bone);
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.02em;
+}
+
+.confirmed-heading em {
+  font-style: italic;
+  color: var(--cognac-lt);
+}
+
+.confirmed-body {
+  font-size: 0.95rem;
+  color: var(--parchment-dim);
+  line-height: 1.9;
+  margin-bottom: 3rem;
+  max-width: 44ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.divider-ornament {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 auto 2.5rem;
+  max-width: 280px;
+}
+
+.divider-ornament::before,
+.divider-ornament::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--smoke);
+}
+
+.divider-diamond {
+  color: var(--cognac);
+  font-size: 0.5rem;
+}
+
+.next-steps {
+  list-style: none;
+  text-align: left;
+  background: var(--ink-lift);
+  border: 1px solid var(--smoke);
+  border-radius: 3px;
+  padding: 2rem 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.next-steps li {
+  font-size: 0.88rem;
+  color: var(--parchment-dim);
+  line-height: 1.8;
+  padding: 0.6rem 0 0.6rem 1.2rem;
+  border-bottom: 1px solid var(--smoke);
+  position: relative;
+}
+
+.next-steps li:last-child { border-bottom: none; }
+
+.next-steps li::before {
+  content: '·';
+  color: var(--cognac);
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.next-steps li strong {
+  color: var(--parchment);
+  font-weight: 400;
+}
+
+.confirmed-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.btn-primary {
+  font-family: 'Cormorant SC', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  color: var(--bone);
+  background: var(--cognac-dk);
+  border: 1px solid var(--cognac-dk);
+  padding: 0.8em 2em;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.btn-primary:hover { background: #7a5234; }
+
+.btn-ghost {
+  font-family: 'Cormorant SC', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  color: var(--parchment-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--smoke-lt);
+  padding-bottom: 0.1em;
+  transition: color 0.2s ease;
+}
+.btn-ghost:hover { color: var(--parchment); }
+
+.confirmed-closing {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--smoke-lt);
+  line-height: 1.7;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--smoke);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.footer-body {
+  font-family: 'Cormorant SC', serif;
+  font-size: 0.54rem;
+  letter-spacing: 0.25em;
+  color: var(--smoke-lt);
+  line-height: 2;
+}
+
+.footer-body a {
+  color: var(--parchment-dim);
+  text-decoration: none;
+}
+
+.footer-colophon {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.75rem;
+  color: var(--smoke-lt);
+  margin-top: 0.8rem;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-mark" href="/">
+    <img src="obp_mark_square_720.png" alt="Ohana Belle Press">
+    <div>
+      <span class="nav-press-name">Ohana Belle Press</span>
+      <span class="nav-press-sub">Narrative Intelligence Method</span>
+    </div>
+  </a>
+</nav>
+
+<!-- ── MAIN ── -->
+<main>
+  <div class="confirmed-block">
+
+    <img class="confirmed-mark" src="obp_mark_square_720.png" alt="Ohana Belle Press">
+
+    <span class="confirmed-eyebrow">Ohana Belle Press · NIM</span>
+
+    <h1 class="confirmed-heading">You're confirmed.<br>The PDF is <em>on its way.</em></h1>
+
+    <p class="confirmed-body">Check your inbox in the next few minutes. The Hurston blind test analysis will be there — three chapters, no title, no author, and what the system found.</p>
+
+    <div class="divider-ornament">
+      <span class="divider-diamond">◆</span>
+    </div>
+
+    <ul class="next-steps">
+      <li><strong>Check your inbox.</strong> The PDF arrives from LoveOhanaBelle@gmail.com. If you don't see it in five minutes, check your spam folder.</li>
+      <li><strong>Read it when you're ready.</strong> There's no timeline. The analysis stands on its own.</li>
+      <li><strong>When you're ready to apply,</strong> the form is below. Most applications are accepted within 48 hours.</li>
+    </ul>
+
+    <div class="confirmed-actions">
+      <a class="btn-primary" href="/#apply">Apply for Review</a>
+      <a class="btn-ghost" href="/#pricing">See pricing first</a>
+    </div>
+
+    <p class="confirmed-closing">
+      Built in West Virginia. Named for a dog.<br>
+      Serious about the work.
+    </p>
+
+  </div>
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p class="footer-body">
+    Ohana Belle Press &nbsp;·&nbsp; West Virginia &nbsp;·&nbsp; Est. 2025<br>
+    <a href="mailto:LoveOhanaBelle@gmail.com">LoveOhanaBelle@gmail.com</a>
+    &nbsp;·&nbsp;
+    <a href="/">Return to NIM</a>
+  </p>
+  <p class="footer-colophon">Narrative Intelligence Method · Hearthprint™</p>
+</footer>
+
+</body>
+</html>
