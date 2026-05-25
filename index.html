@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="A manuscript diagnostic for novelists who've revised endlessly and still don't know what's wrong. NIM identifies root causes, not symptoms.">
 <title>Ohana Belle Press · Narrative Intelligence Method</title>
-<link rel="icon" type="image/png" href="obp_favicon_32.png">
+<link rel="icon" type="image/png" href="obp_favicon_32_banner.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+SC:wght@300;400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 
@@ -467,6 +467,36 @@ footer { border-top: 1px solid var(--smoke); padding: 4rem 2rem; }
   margin-left: auto;
   margin-right: auto;
 }
+
+/* ── HERO BANNER ── */
+.hero-banner-wrap {
+  width: 100%;
+  border-bottom: 1px solid var(--smoke);
+}
+
+.hero-banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 340px;
+  object-fit: cover;
+  object-position: left center;
+}
+
+.hero-text-section {
+  padding: 4rem 0 3.5rem;
+  border-bottom: 1px solid var(--smoke);
+}
+
+.hero-text-section .hero-eyebrow { margin-bottom: 1.2rem; }
+.hero-text-section .hero-headline { max-width: 18ch; margin-bottom: 1.2rem; }
+.hero-text-section .hero-body { margin-bottom: 2rem; }
+
+@media (max-width: 680px) {
+  .hero-banner-img { max-height: 200px; object-position: left top; }
+  .hero-text-section { padding: 2.5rem 0 2rem; }
+}
+
 </style>
 </head>
 
@@ -491,7 +521,7 @@ footer { border-top: 1px solid var(--smoke); padding: 4rem 2rem; }
 <!-- ── NAV ── -->
 <nav>
   <a class="nav-mark" href="#">
-    <img src="obp_favicon_512.png" alt="Ohana Belle Press">
+    <img src="obp_mark_square_720.png" alt="Ohana Belle Press">
     <div>
       <span class="nav-press-name">Ohana Belle Press</span>
       <span class="nav-press-sub">Narrative Intelligence Method</span>
@@ -501,18 +531,19 @@ footer { border-top: 1px solid var(--smoke); padding: 4rem 2rem; }
 </nav>
 
 <!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-text">
+<div class="hero-banner-wrap">
+  <img src="obp_banner_hero.png" alt="Ohana Belle Press · Narrative Intelligence Method" class="hero-banner-img">
+</div>
+
+<section class="hero-text-section">
+  <div class="wrap">
     <span class="hero-eyebrow">Narrative Intelligence Method</span>
-    <h1 class="hero-headline">For novelists who've revised endlessly and still don't know <em>what's wrong.</em></h1>
+    <h1 class="hero-headline">For novelists who've revised endlessly<br>and still don't know <em>what's wrong.</em></h1>
     <p class="hero-body">NIM is a professional manuscript diagnostic that identifies the structural, emotional, and narrative issues holding your book back — and tells you exactly what to fix first.</p>
     <div class="hero-actions">
       <a class="btn-primary" href="#apply">Apply for Review</a>
       <a class="btn-ghost" href="#method">See how it works</a>
     </div>
-  </div>
-  <div class="hero-image-col">
-    <img src="obp_hero_dark_800.png" alt="Ohana Belle Press">
   </div>
 </section>
 
@@ -791,7 +822,7 @@ footer { border-top: 1px solid var(--smoke); padding: 4rem 2rem; }
   <div class="footer-inner">
     <div>
       <div class="footer-mark">
-        <img src="obp_colophon_mark_500.png" alt="Ohana Belle Press">
+        <img src="obp_mark_square_720.png" alt="Ohana Belle Press">
         <div>
           <span class="footer-name">Ohana Belle Press</span>
           <span class="footer-sub">West Virginia · Est. 2025</span>
