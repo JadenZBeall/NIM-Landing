@@ -3,843 +3,773 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="A manuscript diagnostic for novelists who've revised endlessly and still don't know what's wrong. NIM identifies root causes, not symptoms.">
-<title>Ohana Belle Press · Narrative Intelligence Method</title>
-<link rel="icon" type="image/png" href="obp_favicon_32_banner.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+SC:wght@300;400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
-
+<title>Narrative Intelligence Method — Ohana Belle Press</title>
+<meta name="description" content="A manuscript diagnostic that reveals what your story is already doing well, what may be holding it back, and what opportunities are waiting beneath the surface.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink:        #1c1c18;
-  --ink-lift:   #17141e;
-  --ink-mid:    #211d28;
-  --parchment:  #e8dfc8;
-  --parchment-dim: #a89e88;
-  --bone:       #f2ece0;
-  --cognac:     #cc8d50;
-  --cognac-dk:  #8b5e3c;
-  --cognac-lt:  #e0a96d;
-  --smoke:      #3d3848;
-  --smoke-lt:   #585260;
-  --page-max:   900px;
-}
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-
-body {
-  background: var(--ink);
-  color: var(--parchment);
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-weight: 300;
-  line-height: 1.9;
+:root {
+  --night: #06050d;
+  --ember: #F0B05A;
+  --ember-mid: #D4783E;
+  --ember-low: #8a4020;
+  --bone: #F8F0DC;
+  --dim: #7A6A50;
+  --line: rgba(212,120,62,0.18);
+  --text-hero: #FDF6E8;
+  --text-body: #E8DCBC;
+  --text-mid: #C8B890;
+  --text-low: #9A8A6A;
 }
-
-body::before {
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--night);
+  color: var(--bone);
+  font-size: 17px;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+#fireCanvas {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.32;
+}
+body::after {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.055;
-  mix-blend-mode: soft-light;
+  z-index: 1;
   pointer-events: none;
-  z-index: 900;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
 }
+#progressBar {
+  position: fixed; top: 0; left: 0;
+  height: 2px; width: 0%;
+  background: linear-gradient(to right, var(--ember-low), var(--ember));
+  z-index: 999;
+  transition: width 0.1s linear;
+}
+.layer { position: relative; z-index: 2; }
 
-.wrap { max-width: var(--page-max); margin: 0 auto; padding: 0 2rem; }
-
-/* ── NAV ── */
-nav {
-  padding: 1.8rem 2rem;
+/* NAV */
+header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 20;
+  padding: 0.9rem 2.5rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--smoke);
-  position: sticky;
-  top: 0;
-  background: rgba(28,28,24,0.96);
-  backdrop-filter: blur(8px);
-  z-index: 100;
-}
-
-.nav-mark {
-  display: flex;
   align-items: center;
-  gap: 0.9rem;
-  text-decoration: none;
+  background: linear-gradient(to bottom, rgba(6,5,13,0.97), transparent);
+  backdrop-filter: blur(2px);
 }
-
-.nav-mark img { width: 36px; height: 36px; object-fit: contain; border-radius: 50%; }
-
-.nav-press-name {
-  font-family: 'Crimson Pro', serif;
-  font-weight: 400;
-  font-size: 1.05rem;
-  letter-spacing: 0.08em;
-  color: var(--bone);
-  line-height: 1;
-  display: block;
-}
-
-.nav-press-sub {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.52rem;
-  letter-spacing: 0.3em;
-  color: var(--cognac-lt);
-  display: block;
-  margin-top: 0.2rem;
-}
-
+.header-logo { height: 46px; width: auto; display: block; }
 .nav-cta {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.6rem;
-  letter-spacing: 0.25em;
-  color: var(--cognac-lt);
+  font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--text-body); text-decoration: none;
+  border: 1px solid var(--line); padding: 8px 20px;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+  font-family: 'Jost', sans-serif;
+}
+.nav-cta:hover { border-color: var(--ember-mid); color: var(--ember); background: rgba(212,120,62,0.06); }
+
+/* LAYOUT */
+.section { padding: 6rem 2rem; }
+.section-narrow { max-width: 620px; margin: 0 auto; }
+.section-mid { max-width: 720px; margin: 0 auto; }
+
+/* DIVIDERS */
+.s-div { display: flex; align-items: center; justify-content: center; padding: 0 2rem; }
+.s-div-line { width: 1px; height: 56px; background: linear-gradient(to bottom, transparent, var(--ember-mid), transparent); }
+.rule-ember { width: 36px; height: 2px; background: var(--ember-mid); margin: 0 auto 2.5rem; }
+
+/* BUTTONS */
+.btn {
+  display: inline-block;
+  border: 1px solid var(--ember-mid);
+  color: var(--ember);
+  padding: 15px 48px;
   text-decoration: none;
-  border: 1px solid var(--cognac-dk);
-  padding: 0.55em 1.2em;
-  border-radius: 2px;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-.nav-cta:hover { background: var(--cognac-dk); color: var(--bone); }
-
-/* ── HERO ── */
-.hero {
-  padding: 5rem 2rem 4rem;
-  max-width: var(--page-max);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-  min-height: 80vh;
-}
-
-@media (max-width: 680px) {
-  .hero { grid-template-columns: 1fr; gap: 2.5rem; min-height: auto; padding: 3rem 1.5rem; }
-  .hero-image-col { order: -1; }
-}
-
-.hero-image-col { display: flex; justify-content: center; }
-
-.hero-image-col img {
-  width: 100%;
-  max-width: 420px;
-  height: auto;
-  display: block;
-  border-radius: 50%;
-  box-shadow: 0 0 80px rgba(204,141,80,0.12);
-}
-
-.hero-eyebrow {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.58rem;
-  letter-spacing: 0.38em;
-  color: var(--cognac-lt);
-  display: block;
-  margin-bottom: 1.5rem;
-}
-
-.hero-headline {
-  font-family: 'Crimson Pro', serif;
-  font-weight: 400;
-  font-size: clamp(2rem, 4.5vw, 3rem);
-  color: var(--bone);
-  line-height: 1.15;
-  letter-spacing: 0.01em;
-  margin-bottom: 1.5rem;
-}
-
-.hero-headline em { font-style: italic; color: var(--cognac-lt); }
-
-.hero-body {
-  font-size: 1rem;
-  color: var(--parchment-dim);
-  line-height: 1.9;
-  margin-bottom: 2.5rem;
-  max-width: 44ch;
-}
-
-.hero-actions { display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: center; }
-
-.btn-primary {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.62rem;
-  letter-spacing: 0.25em;
-  color: var(--bone);
-  background: var(--cognac-dk);
-  border: 1px solid var(--cognac-dk);
-  padding: 0.8em 2em;
-  border-radius: 2px;
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
-.btn-primary:hover { background: #7a5234; }
-
-.btn-ghost {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.62rem;
-  letter-spacing: 0.25em;
-  color: var(--parchment-dim);
-  text-decoration: none;
-  border-bottom: 1px solid var(--smoke-lt);
-  padding-bottom: 0.1em;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-.btn-ghost:hover { color: var(--parchment); border-color: var(--parchment-dim); }
-
-/* ── SECTIONS ── */
-.section-rule { border: none; border-top: 1px solid var(--smoke); margin: 0; }
-
-.section {
-  padding: 6rem 2rem;
-  max-width: var(--page-max);
-  margin: 0 auto;
-  border-bottom: 1px solid var(--smoke);
-}
-
-.section-label {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.56rem;
-  letter-spacing: 0.38em;
-  color: var(--cognac-lt);
-  display: block;
-  margin-bottom: 1.5rem;
-}
-
-.section-heading {
-  font-family: 'Crimson Pro', serif;
-  font-weight: 400;
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-  color: var(--bone);
-  line-height: 1.2;
-  margin-bottom: 1.2rem;
-  letter-spacing: 0.01em;
-}
-
-.section-intro {
-  font-size: 0.95rem;
-  color: var(--parchment-dim);
-  line-height: 1.9;
-  max-width: 56ch;
-  margin-bottom: 3rem;
-}
-
-/* ── PROBLEM ── */
-.problem-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: start;
-}
-@media (max-width: 620px) { .problem-grid { grid-template-columns: 1fr; gap: 2rem; } }
-
-.problem-body { font-size: 0.95rem; color: var(--parchment-dim); line-height: 1.95; }
-.problem-body p { margin-bottom: 1.4rem; }
-.problem-body p:last-child { margin-bottom: 0; }
-.problem-body strong { color: var(--parchment); font-weight: 400; }
-
-.pullquote {
-  font-family: 'IM Fell English', serif;
-  font-style: italic;
-  font-size: 1.2rem;
-  color: var(--parchment);
-  line-height: 1.6;
-  border-left: 2px solid var(--cognac);
-  padding-left: 1.5rem;
-}
-
-/* ── FORCES ── */
-.forces-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.5rem 3rem;
-  margin-top: 2rem;
-}
-@media (max-width: 560px) { .forces-grid { grid-template-columns: 1fr; } }
-
-.force-block { border-top: 1px solid var(--smoke); padding-top: 1.5rem; }
-.force-name { font-family: 'Crimson Pro', serif; font-weight: 400; font-size: 1.15rem; color: var(--bone); display: block; margin-bottom: 0.4rem; letter-spacing: 0.04em; }
-.force-label { font-family: 'Cormorant SC', serif; font-size: 0.56rem; letter-spacing: 0.28em; color: var(--cognac-lt); display: block; margin-bottom: 0.8rem; }
-.force-desc { font-size: 0.88rem; color: var(--parchment-dim); line-height: 1.8; }
-
-/* ── HEARTHPRINT PREVIEW ── */
-.hearthprint-preview {
-  background: var(--ink-lift);
-  border: 1px solid var(--smoke);
-  border-radius: 3px;
-  padding: 2.5rem;
-  max-width: 520px;
-  margin: 2rem auto 0;
-}
-
-.hp-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2rem;
-  padding-bottom: 1.2rem;
-  border-bottom: 1px solid var(--smoke);
-}
-
-.hp-press { font-family: 'Cormorant SC', serif; font-size: 0.56rem; letter-spacing: 0.28em; color: var(--cognac-lt); display: block; }
-.hp-title { font-family: 'Crimson Pro', serif; font-weight: 400; font-size: 1rem; color: var(--bone); display: block; margin-top: 0.3rem; }
-.hp-profile { font-family: 'Cormorant SC', serif; font-size: 0.58rem; letter-spacing: 0.2em; color: var(--cognac-lt); text-align: right; }
-
-.hp-force-row { margin-bottom: 1.1rem; }
-.hp-force-label { display: flex; justify-content: space-between; margin-bottom: 0.35rem; }
-.hp-force-name { font-family: 'Cormorant SC', serif; font-size: 0.58rem; letter-spacing: 0.2em; color: var(--parchment-dim); }
-.hp-force-tag { font-family: 'Cormorant SC', serif; font-size: 0.52rem; letter-spacing: 0.15em; color: var(--cognac-lt); }
-.hp-bar-track { height: 3px; background: var(--smoke); border-radius: 2px; overflow: hidden; }
-.hp-bar-fill { height: 100%; background: var(--cognac); border-radius: 2px; }
-
-.hp-redacted { background: var(--smoke); height: 0.7rem; border-radius: 1px; margin-top: 1.5rem; opacity: 0.5; }
-.hp-redacted + .hp-redacted { margin-top: 0.5rem; width: 70%; }
-
-.hp-footer { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--smoke); font-family: 'Cormorant SC', serif; font-size: 0.5rem; letter-spacing: 0.22em; color: var(--smoke-lt); text-align: center; }
-
-/* ── PROOF ── */
-.proof-block {
-  background: var(--ink-lift);
-  border-left: 2px solid var(--cognac);
-  padding: 2.5rem;
-  border-radius: 0 3px 3px 0;
-  margin-top: 2rem;
-}
-
-.proof-findings { list-style: none; margin-top: 1.5rem; }
-.proof-findings li { font-size: 0.88rem; color: var(--parchment-dim); line-height: 1.8; padding: 0.7rem 0 0.7rem 1.2rem; border-bottom: 1px solid var(--smoke); position: relative; }
-.proof-findings li::before { content: '·'; color: var(--cognac); position: absolute; left: 0; }
-.proof-findings li:last-child { border-bottom: none; }
-.proof-source { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.82rem; color: var(--parchment-dim); margin-top: 1.5rem; display: block; }
-
-/* ── KIT LEAD MAGNET ── */
-.magnet-block {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-  margin-top: 2rem;
-}
-@media (max-width: 580px) { .magnet-block { grid-template-columns: 1fr; } }
-
-/* Kit form overrides to match brand */
-.kit-form-wrapper { width: 100%; }
-.kit-form-wrapper form { display: flex; flex-direction: column; gap: 0.8rem; }
-
-/* ── PRICING ── */
-.pricing-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-@media (max-width: 700px) { .pricing-grid { grid-template-columns: 1fr; } }
-
-.tier { border: 1px solid var(--smoke); border-radius: 3px; padding: 2rem 1.8rem; display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.25s ease; }
-.tier:hover { border-color: var(--cognac-dk); }
-.tier.featured { border-color: var(--cognac-dk); background: var(--ink-lift); }
-
-.tier-badge { font-family: 'Cormorant SC', serif; font-size: 0.52rem; letter-spacing: 0.28em; color: var(--cognac-lt); display: block; }
-.tier-name { font-family: 'Crimson Pro', serif; font-weight: 400; font-size: 1.15rem; color: var(--bone); display: block; margin-top: 0.2rem; }
-.tier-price { font-family: 'Crimson Pro', serif; font-weight: 300; font-size: 2.2rem; color: var(--bone); line-height: 1; }
-.tier-price sup { font-size: 1rem; vertical-align: super; color: var(--parchment-dim); }
-.tier-desc { font-size: 0.82rem; color: var(--parchment-dim); line-height: 1.75; border-top: 1px solid var(--smoke); padding-top: 1rem; }
-.tier-features { list-style: none; font-size: 0.8rem; color: var(--parchment-dim); line-height: 1.9; flex: 1; }
-.tier-features li::before { content: '· '; color: var(--cognac); }
-
-.tier-btn {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.58rem;
-  letter-spacing: 0.22em;
-  color: var(--parchment);
-  border: 1px solid var(--smoke);
-  padding: 0.75em 1.2em;
-  border-radius: 2px;
-  text-decoration: none;
-  text-align: center;
-  display: block;
-  transition: border-color 0.2s ease, color 0.2s ease;
-  margin-top: auto;
-}
-.tier-btn:hover { border-color: var(--cognac-lt); color: var(--bone); }
-.tier.featured .tier-btn { background: var(--cognac-dk); border-color: var(--cognac-dk); color: var(--bone); }
-.tier.featured .tier-btn:hover { background: #7a5234; }
-
-/* ── APPLICATION FORM ── */
-.apply-section { padding: 6rem 2rem; max-width: var(--page-max); margin: 0 auto; }
-
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
-@media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } }
-.form-full { grid-column: 1 / -1; }
-
-.field label { font-family: 'Cormorant SC', serif; font-size: 0.56rem; letter-spacing: 0.28em; color: var(--parchment-dim); display: block; margin-bottom: 0.4rem; }
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  background: var(--ink-lift);
-  border: 1px solid var(--smoke);
-  color: var(--parchment);
-  padding: 0.75rem 1rem;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.92rem;
-  border-radius: 2px;
-  outline: none;
-  transition: border-color 0.2s ease;
-  -webkit-appearance: none;
-}
-
-.field select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a89e88' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  padding-right: 2.5rem;
-  cursor: pointer;
-}
-
-.field input::placeholder,
-.field textarea::placeholder { color: var(--smoke-lt); }
-.field input:focus,
-.field select:focus,
-.field textarea:focus { border-color: var(--cognac); }
-.field textarea { resize: vertical; min-height: 120px; line-height: 1.7; }
-
-.frustrations-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.4rem; }
-@media (max-width: 480px) { .frustrations-grid { grid-template-columns: 1fr; } }
-
-.frustration-opt { display: flex; align-items: flex-start; gap: 0.7rem; cursor: pointer; }
-.frustration-opt input[type="checkbox"] { width: auto; margin-top: 0.25rem; accent-color: var(--cognac); cursor: pointer; flex-shrink: 0; }
-.frustration-opt span { font-size: 0.82rem; color: var(--parchment-dim); line-height: 1.5; }
-
-.form-submit-row { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.8rem; }
-
-.btn-submit {
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.65rem;
+  text-transform: uppercase;
   letter-spacing: 0.28em;
-  color: var(--bone);
-  background: var(--cognac-dk);
-  border: none;
-  padding: 1em 2.5em;
-  border-radius: 2px;
+  font-size: 0.6rem;
+  font-weight: 400;
+  transition: background 0.3s, color 0.3s;
   cursor: pointer;
-  align-self: flex-start;
-  transition: background 0.2s ease;
+  background: none;
+  font-family: 'Jost', sans-serif;
 }
-.btn-submit:hover { background: #7a5234; }
+.btn:hover { background: var(--ember-mid); color: var(--night); }
 
-.form-privacy { font-size: 0.75rem; color: var(--smoke-lt); line-height: 1.7; max-width: 52ch; }
+/* HERO */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 10rem 2rem 6rem;
+  position: relative; overflow: hidden;
+}
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,120,62,0.08) 0%, transparent 65%);
+  bottom: -15%; left: 50%; transform: translateX(-50%);
+  pointer-events: none;
+  animation: pulse 8s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.06); }
+}
+.hero-eyebrow {
+  font-size: 0.54rem; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--ember-mid); margin-bottom: 2.2rem;
+  opacity: 0; animation: up 1s ease forwards 0.2s;
+}
+.hero-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(2.8rem, 6vw, 4.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text-hero);
+  max-width: 700px;
+  margin-bottom: 2rem;
+  opacity: 0; animation: up 1s ease forwards 0.4s;
+}
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  line-height: 1.65;
+  color: var(--text-body);
+  max-width: 520px;
+  margin: 0 auto 1.5rem;
+  opacity: 0; animation: up 1s ease forwards 0.62s;
+}
+.hero-because {
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  margin-bottom: 3rem;
+  opacity: 0; animation: up 1s ease forwards 0.8s;
+  font-style: italic;
+}
+.hero-cta {
+  opacity: 0; animation: up 1s ease forwards 1s;
+}
 
-/* ── FOOTER ── */
-footer { border-top: 1px solid var(--smoke); padding: 4rem 2rem; }
+/* PROSE SECTIONS */
+.prose-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+  line-height: 1.25;
+  color: var(--text-hero);
+  margin-bottom: 2.5rem;
+}
+.prose-body {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--text-body);
+  margin-bottom: 1.1rem;
+}
+.prose-body:last-child { margin-bottom: 0; }
+.prose-italic {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  line-height: 1.65;
+  color: var(--text-mid);
+  margin-bottom: 1.1rem;
+}
 
-.footer-inner {
-  max-width: var(--page-max);
-  margin: 0 auto;
+/* DISCOVERY EXAMPLE */
+.discovery-block {
+  border: 1px solid var(--line);
+  padding: 2.8rem;
+  position: relative;
+  margin-top: 3rem;
+}
+.discovery-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ember-mid), transparent);
+}
+.discovery-label {
+  font-size: 0.54rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--ember-mid); margin-bottom: 1.5rem;
+  font-family: 'Jost', sans-serif;
+}
+
+/* WHAT YOU'LL RECEIVE */
+.receive-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: start;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 3rem;
 }
-@media (max-width: 560px) { .footer-inner { grid-template-columns: 1fr; } }
+.receive-item {
+  background: var(--night);
+  padding: 2.2rem 2rem;
+  transition: background 0.3s;
+}
+.receive-item:hover { background: rgba(26,18,48,0.8); }
+.receive-title {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-hero);
+  margin-bottom: 0.7rem;
+}
+.receive-desc {
+  font-size: 0.88rem;
+  line-height: 1.78;
+  color: var(--text-mid);
+}
 
-.footer-mark { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
-.footer-mark img { width: 56px; height: 56px; object-fit: contain; border-radius: 50%; }
-.footer-name { font-family: 'Crimson Pro', serif; font-weight: 400; font-size: 1.1rem; color: var(--bone); display: block; letter-spacing: 0.06em; }
-.footer-sub { font-family: 'Cormorant SC', serif; font-size: 0.52rem; letter-spacing: 0.28em; color: var(--cognac-lt); display: block; margin-top: 0.2rem; }
-.footer-body { font-size: 0.8rem; color: var(--smoke-lt); line-height: 1.9; }
-.footer-body a { color: var(--parchment-dim); text-decoration: none; }
-.footer-body a:hover { color: var(--parchment); }
+/* PROCESS */
+.process-list {
+  display: flex; flex-direction: column; gap: 0;
+  margin-top: 3rem;
+}
+.process-step {
+  display: flex; gap: 1.8rem;
+  padding: 1.8rem 0;
+  border-bottom: 0.5px solid var(--line);
+  align-items: flex-start;
+}
+.process-step:first-child { border-top: 0.5px solid var(--line); }
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 300;
+  color: var(--ember-mid); line-height: 1;
+  min-width: 2.2rem; flex-shrink: 0;
+}
+.step-title {
+  font-family: 'Jost', sans-serif; font-weight: 400;
+  font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text-hero); margin-bottom: 0.45rem;
+}
+.step-desc { font-size: 0.9rem; line-height: 1.8; color: var(--text-body); }
 
-.footer-colophon {
-  font-family: 'IM Fell English', serif;
-  font-style: italic;
-  font-size: 0.78rem;
-  color: var(--smoke-lt);
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--smoke);
+/* FAQ */
+.faq-list {
+  display: flex; flex-direction: column; gap: 0;
+  margin-top: 3rem;
+}
+.faq-item {
+  padding: 2rem 0;
+  border-bottom: 0.5px solid var(--line);
+}
+.faq-item:first-child { border-top: 0.5px solid var(--line); }
+.faq-q {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400; font-size: 1.15rem;
+  color: var(--text-hero); margin-bottom: 0.8rem;
+}
+.faq-a { font-size: 0.9rem; line-height: 1.88; color: var(--text-body); }
+.faq-a p + p { margin-top: 0.6rem; }
+
+/* CLOSING */
+.closing-block {
   text-align: center;
-  max-width: var(--page-max);
-  margin-left: auto;
-  margin-right: auto;
+  padding: 7rem 2rem 8rem;
+  background: linear-gradient(to bottom, transparent, rgba(6,5,13,0.98) 70%);
+}
+.closing-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.25;
+  color: var(--text-hero);
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+}
+.closing-body {
+  font-size: 0.95rem; line-height: 1.9;
+  color: var(--text-body);
+  max-width: 480px;
+  margin: 0 auto 3rem;
 }
 
-/* ── HERO BANNER ── */
-.hero-banner-wrap {
-  width: 100%;
-  border-bottom: 1px solid var(--smoke);
+/* SECTION BACKGROUNDS */
+.bg-subtle { background: linear-gradient(to bottom, transparent, rgba(26,18,48,0.4) 50%, transparent); }
+.bg-dark { background: rgba(26,18,48,0.25); }
+
+/* LEAD MAGNET */
+.lm-section {
+  padding: 5rem 2rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(26,18,48,0.3);
+  text-align: center;
+}
+.lm-eyebrow {
+  font-size: 0.54rem; letter-spacing: 0.36em; text-transform: uppercase;
+  color: var(--ember-mid); margin-bottom: 1.2rem;
+  font-family: 'Jost', sans-serif;
+}
+.lm-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-style: italic;
+  font-size: clamp(1.3rem, 2.8vw, 1.8rem);
+  color: var(--text-hero); max-width: 520px;
+  margin: 0 auto 0.8rem; line-height: 1.4;
+}
+.lm-sub {
+  font-size: 0.88rem; color: var(--text-body);
+  max-width: 420px; margin: 0 auto 2rem; line-height: 1.8;
 }
 
-.hero-banner-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  max-height: 340px;
-  object-fit: cover;
-  object-position: left center;
+/* FOOTER */
+footer { padding: 3rem 2rem; text-align: center; border-top: 1px solid var(--line); }
+.footer-logo { height: 48px; width: auto; margin: 0 auto 1.5rem; display: block; opacity: 0.72; }
+.footer-text {
+  font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--dim); line-height: 2.2;
+  font-family: 'Jost', sans-serif;
 }
+.footer-text a { color: var(--ember-mid); text-decoration: none; }
 
-.hero-text-section {
-  padding: 4rem 0 3.5rem;
-  border-bottom: 1px solid var(--smoke);
+@keyframes up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.85s ease, transform 0.85s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 640px) {
+  header { padding: 0.75rem 1.4rem; }
+  .header-logo { height: 36px; }
+  .section { padding: 4rem 1.5rem; }
+  .receive-grid { grid-template-columns: 1fr; }
+  .discovery-block { padding: 2rem 1.5rem; }
 }
-
-.hero-text-section .hero-eyebrow { margin-bottom: 1.2rem; }
-.hero-text-section .hero-headline { max-width: 18ch; margin-bottom: 1.2rem; }
-.hero-text-section .hero-body { margin-bottom: 2rem; }
-
-@media (max-width: 680px) {
-  .hero-banner-img { max-height: 200px; object-position: left top; }
-  .hero-text-section { padding: 2.5rem 0 2rem; }
-}
-
 </style>
 </head>
-
 <body>
 
-<!-- Netlify form detection -->
-<form name="nim-application" netlify netlify-honeypot="bot-field" hidden>
-  <input type="text" name="name">
-  <input type="email" name="email">
-  <input type="text" name="genre">
-  <input type="text" name="drafts">
-  <input type="text" name="frustration">
-  <input type="text" name="prior-feedback">
-  <input type="text" name="next-step">
-  <textarea name="why-now"></textarea>
-</form>
+<div id="progressBar"></div>
+<canvas id="fireCanvas"></canvas>
 
-<form name="hurston-pdf-request" netlify netlify-honeypot="bot-field" hidden>
-  <input type="email" name="email">
-</form>
-
-<!-- ── NAV ── -->
-<nav>
-  <a class="nav-mark" href="#">
-    <img src="obp_mark_square_720.png" alt="Ohana Belle Press">
-    <div>
-      <span class="nav-press-name">Ohana Belle Press</span>
-      <span class="nav-press-sub">Narrative Intelligence Method</span>
-    </div>
-  </a>
-  <a class="nav-cta" href="#apply">Apply for Review</a>
-</nav>
-
-<!-- ── HERO ── -->
-<div class="hero-banner-wrap">
-  <img src="obp_banner_hero.png" alt="Ohana Belle Press · Narrative Intelligence Method" class="hero-banner-img">
+<div style="display:none">
+  <form name="nim-submission" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="nim-submission">
+    <input name="bot-field"><input name="full-name"><input name="email">
+    <input name="genre"><input name="drafts"><input name="frustration">
+    <input name="why-now"><input name="selected-tier">
+  </form>
+  <form name="hurston-pdf-request" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="hurston-pdf-request">
+    <input name="bot-field"><input name="email">
+  </form>
 </div>
 
-<section class="hero-text-section">
-  <div class="wrap">
-    <span class="hero-eyebrow">Narrative Intelligence Method</span>
-    <h1 class="hero-headline">For novelists who've revised endlessly<br>and still don't know <em>what's wrong.</em></h1>
-    <p class="hero-body">NIM is a professional manuscript diagnostic that identifies the structural, emotional, and narrative issues holding your book back — and tells you exactly what to fix first.</p>
-    <div class="hero-actions">
-      <a class="btn-primary" href="#apply">Apply for Review</a>
-      <a class="btn-ghost" href="#method">See how it works</a>
+<header class="layer">
+  <a href="#"><img src="/4226.png" alt="Ohana Belle Press" class="header-logo"></a>
+  <a href="#start" class="nav-cta">Start Here</a>
+</header>
+
+
+<!-- HERO -->
+<section id="hero" class="layer">
+  <div class="hero-glow"></div>
+  <p class="hero-eyebrow">Narrative Intelligence Method &nbsp;·&nbsp; Ohana Belle Press</p>
+  <h1 class="hero-headline">See Your Story More Clearly</h1>
+  <p class="hero-sub">A manuscript diagnostic that reveals what your story is already doing well, what may be holding it back, and what opportunities are waiting beneath the surface.</p>
+  <p class="hero-because">Because most writers don't struggle with effort.<br>They struggle with visibility.</p>
+  <div class="hero-cta">
+    <a href="#start" class="btn">Start Here</a>
+  </div>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- YOU ALREADY KNOW -->
+<section class="section layer">
+  <div class="section-narrow">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">You Already Know Something About This Story Isn't Quite Landing the Way You Want It To</h2>
+    <p class="prose-italic reveal">Not in a dramatic way.</p>
+    <p class="prose-italic reveal">More in the quiet way that keeps you coming back to it.</p>
+    <p class="prose-body reveal">You reread scenes.</p>
+    <p class="prose-body reveal">You adjust pacing.</p>
+    <p class="prose-body reveal">You rewrite passages that almost work — but don't fully hold.</p>
+    <p class="prose-body reveal">And every time, you get a little closer.</p>
+    <p class="prose-body reveal">But not all the way there.</p>
+    <p class="prose-body reveal">It doesn't feel like failure.</p>
+    <p class="prose-italic reveal">It feels like something you haven't quite been able to see clearly yet.</p>
+  </div>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- MOST MANUSCRIPTS -->
+<section class="section layer bg-subtle">
+  <div class="section-narrow">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">Most Manuscripts Don't Struggle Because Nothing Is Working</h2>
+    <p class="prose-body reveal">They struggle because it's difficult to see what is actually happening inside them.</p>
+    <p class="prose-body reveal">A scene feels slow, but the real issue may be somewhere else.</p>
+    <p class="prose-body reveal">A character feels flat, but the cause may be structural.</p>
+    <p class="prose-body reveal">A chapter feels off, but the emotional thread beneath it hasn't fully formed yet.</p>
+    <p class="prose-body reveal">So writers revise what they can see.</p>
+    <p class="prose-body reveal">Again and again.</p>
+    <p class="prose-italic reveal">Not because they're wrong.</p>
+    <p class="prose-italic reveal">Because that's what's visible.</p>
+  </div>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- THE METHOD -->
+<section class="section layer">
+  <div class="section-mid">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">The Narrative Intelligence Method</h2>
+    <p class="prose-body reveal">The Narrative Intelligence Method is a structured way of looking at your manuscript so you can better understand what is really happening inside it.</p>
+    <p class="prose-body reveal" style="margin-top:1.5rem; color: var(--text-mid);">It helps reveal:</p>
+
+    <div style="margin: 1.5rem 0 2rem; display: flex; flex-direction: column; gap: 0; border: 1px solid var(--line);" class="reveal">
+      <div style="padding: 1rem 1.5rem; border-bottom: 0.5px solid var(--line); font-size: 0.92rem; color: var(--text-body); line-height: 1.65;">Where readers are likely to stay engaged — or drift away</div>
+      <div style="padding: 1rem 1.5rem; border-bottom: 0.5px solid var(--line); font-size: 0.92rem; color: var(--text-body); line-height: 1.65;">How characters function across the story</div>
+      <div style="padding: 1rem 1.5rem; border-bottom: 0.5px solid var(--line); font-size: 0.92rem; color: var(--text-body); line-height: 1.65;">Where emotional momentum builds or fades</div>
+      <div style="padding: 1rem 1.5rem; border-bottom: 0.5px solid var(--line); font-size: 0.92rem; color: var(--text-body); line-height: 1.65;">How structure supports or interrupts flow</div>
+      <div style="padding: 1rem 1.5rem; border-bottom: 0.5px solid var(--line); font-size: 0.92rem; color: var(--text-body); line-height: 1.65;">Where themes emerge naturally — or become fragmented</div>
+      <div style="padding: 1rem 1.5rem; border-bottom: 0.5px solid var(--line); font-size: 0.92rem; color: var(--text-body); line-height: 1.65;">Hidden opportunities already present in the manuscript</div>
+      <div style="padding: 1rem 1.5rem; font-size: 0.92rem; color: var(--text-body); line-height: 1.65;">Missed opportunities that could strengthen the story</div>
+    </div>
+
+    <p class="prose-body reveal">Not to judge your work.</p>
+    <p class="prose-italic reveal">Simply to make it easier to see clearly.</p>
+  </div>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- WHAT DISCOVERY LOOKS LIKE -->
+<section class="section layer bg-subtle">
+  <div class="section-mid">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">What Discovery Looks Like</h2>
+    <p class="prose-body reveal">A manuscript may appear to have a pacing problem.</p>
+    <p class="prose-body reveal">But sometimes pacing isn't the issue at all.</p>
+
+    <div class="discovery-block reveal">
+      <p class="discovery-label">A real example of what the method finds</p>
+      <p class="prose-body">A story introduces a relationship between two characters that quietly becomes the emotional center of the book.</p>
+      <p class="prose-body">Readers become invested in that relationship.</p>
+      <p class="prose-body">The manuscript, however, continues treating it as a secondary thread.</p>
+      <p class="prose-body">The result feels like slow pacing.</p>
+      <p class="prose-body">But pacing isn't the cause.</p>
+      <p class="prose-body" style="color: var(--text-hero); margin-top: 1rem;">The story already knows what matters most. The manuscript simply isn't giving it enough emphasis.</p>
+    </div>
+
+    <p class="prose-body reveal" style="margin-top: 2rem;">The Narrative Intelligence Method is designed to uncover insights like these — revealing not only what readers experience, but why they experience it.</p>
+  </div>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- WHAT THIS IS BASED ON -->
+<section class="section layer">
+  <div class="section-narrow">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">What This Method Is Based On</h2>
+    <p class="prose-body reveal">The Narrative Intelligence Method was developed through repeated analysis of manuscripts and published works using a consistent diagnostic framework.</p>
+    <p class="prose-body reveal">Across those analyses, certain patterns emerged again and again.</p>
+    <p class="prose-body reveal">Stories tend to lose momentum in predictable ways.</p>
+    <p class="prose-body reveal">They also tend to succeed in predictable ways.</p>
+    <p class="prose-body reveal">The purpose of the method is not to replace literary judgment.</p>
+    <p class="prose-italic reveal">It's to make those patterns easier to recognize so writers can make clearer decisions about what to do next.</p>
+  </div>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- STRENGTHS FIRST -->
+<section class="section layer bg-subtle">
+  <div class="section-narrow">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">Before Anything Else, We Look at What Is Working</h2>
+    <p class="prose-italic reveal">Because it's easy to lose sight of that when you're deep in revision.</p>
+    <p class="prose-body reveal">Every manuscript has places where it works.</p>
+    <p class="prose-body reveal">Moments where attention holds naturally.</p>
+    <p class="prose-body reveal">Characters who feel alive.</p>
+    <p class="prose-body reveal">Scenes that land exactly as intended.</p>
+    <p class="prose-body reveal">These are not secondary observations.</p>
+    <p class="prose-body reveal">They're often the foundation for everything else that can be improved.</p>
+    <p class="prose-italic reveal">Meaningful revision begins with understanding strengths — not just weaknesses.</p>
+  </div>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- OPPORTUNITIES -->
+<section class="section layer">
+  <div class="section-narrow">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">Sometimes the Strongest Part of a Story Hasn't Fully Formed Yet</h2>
+    <p class="prose-body reveal">A theme appears but never fully develops.</p>
+    <p class="prose-body reveal">A relationship feels compelling but remains underexplored.</p>
+    <p class="prose-body reveal">A narrative thread begins with promise but fades before it pays off.</p>
+    <p class="prose-body reveal">These aren't failures.</p>
+    <p class="prose-italic reveal">They're opportunities.</p>
+    <p class="prose-body reveal">Part of the method is learning to recognize those moments clearly.</p>
+    <p class="prose-body reveal">Not only what is already present.</p>
+    <p class="prose-italic reveal">But what the story may still be capable of becoming.</p>
+  </div>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- STRUCTURED + HUMAN -->
+<section class="section layer bg-subtle">
+  <div class="section-narrow">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">Structured Analysis. Human Interpretation.</h2>
+    <p class="prose-body reveal">Every Narrative Intelligence assessment combines a structured analytical methodology with human editorial judgment.</p>
+    <p class="prose-body reveal">The methodology helps surface patterns.</p>
+    <p class="prose-body reveal">The interpretation comes from a person.</p>
+    <p class="prose-body reveal">Because patterns alone are not enough.</p>
+    <p class="prose-body reveal">Understanding what they mean within a specific story still requires human insight.</p>
+    <p class="prose-body reveal">Stories are written by people.</p>
+    <p class="prose-italic reveal">They deserve to be understood by people.</p>
+  </div>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- WHAT YOU'LL RECEIVE -->
+<section class="section layer" id="receive">
+  <div class="section-mid">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">What You'll Receive</h2>
+    <p class="prose-body reveal">Depending on the assessment level selected, your report may include:</p>
+
+    <div class="receive-grid reveal">
+      <div class="receive-item">
+        <div class="receive-title">Narrative Overview</div>
+        <p class="receive-desc">A structured reading of how the manuscript is functioning overall.</p>
+      </div>
+      <div class="receive-item">
+        <div class="receive-title">Structural Analysis</div>
+        <p class="receive-desc">Where pacing, progression, and story architecture are helping — or hindering — the reading experience.</p>
+      </div>
+      <div class="receive-item">
+        <div class="receive-title">Character Analysis</div>
+        <p class="receive-desc">How characters function individually and in relationship to one another.</p>
+      </div>
+      <div class="receive-item">
+        <div class="receive-title">Emotional and Thematic Assessment</div>
+        <p class="receive-desc">Where the story creates resonance, where it weakens, and where opportunities may exist for greater impact.</p>
+      </div>
+      <div class="receive-item">
+        <div class="receive-title">Opportunity Mapping</div>
+        <p class="receive-desc">Hidden strengths, missed opportunities, and underdeveloped areas of potential.</p>
+      </div>
+      <div class="receive-item">
+        <div class="receive-title">Revision Guidance (Where Included)</div>
+        <p class="receive-desc">Clear priorities for what to focus on next — and why.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<hr class="section-rule">
+<div class="s-div layer"><div class="s-div-line"></div></div>
 
-<!-- ── THE PROBLEM ── -->
-<section class="section" id="problem">
-  <span class="section-label">The Problem</span>
-  <div class="problem-grid">
-    <div class="problem-body">
-      <p>You have been inside this manuscript long enough to lose the thread of what it actually is.</p>
-      <p>The feedback has named things — pacing, stakes, voice — without locating the structure beneath them. You have revised toward those notes and come out the other side still uncertain. Not because the writing is wrong. Because the frame around it has been.</p>
-      <p><strong>Most feedback evaluates your work against a story it was never trying to be.</strong></p>
-      <p>A lyric novel is not a failed thriller. A hybrid memoir is not a broken narrative nonfiction. Every form has its own internal logic. When that logic is evaluated against a generic model, the diagnosis is always slightly wrong. The revision notes point to symptoms. The structure beneath them stays invisible.</p>
-      <p>NIM evaluates your manuscript against its declared form. What it finds is not what is wrong with your writing. It is what your writing is actually doing — and where that diverges from what the form requires.</p>
-    </div>
-    <div>
-      <p class="pullquote">"The revision notes point to symptoms. The structure beneath them stays invisible."</p>
-    </div>
-  </div>
-</section>
 
-<!-- ── THE METHOD ── -->
-<section class="section" id="method">
-  <span class="section-label">The Method</span>
-  <h2 class="section-heading">A structured system that reads the manuscript, not the reputation.</h2>
-  <p class="section-intro">The Narrative Intelligence Method identifies the active forces already present in your writing: how the narrative moves, how attachment is built, how meaning accumulates, what sustains attention over time. These forces are mapped against each other — not against an external checklist — to surface alignment, tension, and structural blind spots invisible from inside the work.</p>
+<!-- WHAT HAPPENS NEXT -->
+<section class="section layer" id="start">
+  <div class="section-mid">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">What Happens Next</h2>
 
-  <div class="forces-grid">
-    <div class="force-block">
-      <span class="force-name">Direction</span>
-      <span class="force-label">The engine beneath the prose</span>
-      <p class="force-desc">What moves the story forward. The structural current that carries the reader from one moment to the next.</p>
-    </div>
-    <div class="force-block">
-      <span class="force-name">Connection</span>
-      <span class="force-label">The relational current</span>
-      <p class="force-desc">What binds the reader to character and voice. The bond that makes them care what happens next.</p>
-    </div>
-    <div class="force-block">
-      <span class="force-name">Meaning</span>
-      <span class="force-label">The resonant layer</span>
-      <p class="force-desc">What gives the story weight beyond its events. The thematic and symbolic architecture beneath the surface.</p>
-    </div>
-    <div class="force-block">
-      <span class="force-name">Desire</span>
-      <span class="force-label">The forward pull</span>
-      <p class="force-desc">What compels the reader to keep reading. The engine of narrative tension and sustained engagement.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ── HEARTHPRINT ── -->
-<section class="section" id="hearthprint">
-  <span class="section-label">The Hearthprint</span>
-  <h2 class="section-heading">Every evaluation produces a document built for your manuscript alone.</h2>
-  <p class="section-intro">A structural map showing how the four forces interact in your specific work — where they hold, where they fracture, and where they diverge from the form you are writing toward.</p>
-
-  <div class="hearthprint-preview">
-    <div class="hp-header">
-      <div>
-        <span class="hp-press">Ohana Belle Press · Hearthprint™</span>
-        <span class="hp-title">Sample Evaluation</span>
-      </div>
-      <span class="hp-profile">Magnetic Driver</span>
-    </div>
-    <div class="hp-force-row">
-      <div class="hp-force-label"><span class="hp-force-name">Direction</span><span class="hp-force-tag">Purposeful</span></div>
-      <div class="hp-bar-track"><div class="hp-bar-fill" style="width:72%"></div></div>
-    </div>
-    <div class="hp-force-row">
-      <div class="hp-force-label"><span class="hp-force-name">Connection</span><span class="hp-force-tag">Immersive</span></div>
-      <div class="hp-bar-track"><div class="hp-bar-fill" style="width:93%"></div></div>
-    </div>
-    <div class="hp-force-row">
-      <div class="hp-force-label"><span class="hp-force-name">Meaning</span><span class="hp-force-tag">Immersive</span></div>
-      <div class="hp-bar-track"><div class="hp-bar-fill" style="width:97%"></div></div>
-    </div>
-    <div class="hp-force-row">
-      <div class="hp-force-label"><span class="hp-force-name">Desire</span><span class="hp-force-tag">Immersive</span></div>
-      <div class="hp-bar-track"><div class="hp-bar-fill" style="width:90%"></div></div>
-    </div>
-    <div class="hp-redacted"></div>
-    <div class="hp-redacted"></div>
-    <div class="hp-footer">Ohana Belle Press · Confidential · Hearthprint™</div>
-  </div>
-</section>
-
-<!-- ── HURSTON PROOF ── -->
-<section class="section" id="proof">
-  <span class="section-label">Proof of Perception</span>
-  <h2 class="section-heading">Three chapters. No title. No author.</h2>
-  <p class="section-intro">Given only the opening of <em>Their Eyes Were Watching God,</em> the system identified the manuscript's structural form, its emotional register, and its governing voice — correctly, without prior knowledge of the text.</p>
-
-  <div class="proof-block">
-    <p style="font-family:'Cormorant SC',serif; font-size:0.6rem; letter-spacing:0.28em; color:var(--cognac-lt); margin-bottom:1rem;">Zora Neale Hurston · 1937 · Blind Test</p>
-    <ul class="proof-findings">
-      <li>Form identified as lyric — not penalized for its absence of conventional escalation</li>
-      <li>Voice assessed as operating at its structural ceiling — a strength, not an outlier</li>
-      <li>Emotional register and tragic vector correctly named before the arc resolved</li>
-      <li>System hedged appropriately on structural convergence from three chapters alone — that restraint is what makes the findings trustworthy</li>
-    </ul>
-    <span class="proof-source">This is what it means for your manuscript: it will be read as what it is, not what it resembles.</span>
-  </div>
-</section>
-
-<!-- ── LEAD MAGNET / KIT FORM ── -->
-<section class="section" id="pdf">
-  <span class="section-label">Read the Evidence First</span>
-  <div class="magnet-block">
-    <div>
-      <h2 class="section-heading" style="margin-bottom:0.8rem;">Not ready to apply?</h2>
-      <p class="section-intro" style="margin-bottom:0;">Read how the system identified Hurston's voice before you decide. Three chapters, no title, no author. Download the analysis and see exactly what the method found.</p>
-      <p style="font-size:0.78rem; color:var(--smoke-lt); margin-top:1rem;">One email. The PDF. Nothing else.</p>
-    </div>
-    <div class="kit-form-wrapper">
-      <!-- Kit form embed — form ID 9409442 -->
-      <script async data-uid="910dbe58e7" src="https://ohana-belle-press.ck.page/910dbe58e7/index.js"></script>
-    </div>
-  </div>
-</section>
-
-<!-- ── PRICING ── -->
-<section class="section" id="pricing">
-  <span class="section-label">Choose Your Level</span>
-  <h2 class="section-heading">Built for where you actually are.</h2>
-  <p class="section-intro">NIM accepts applications, not open purchases. This ensures every diagnostic receives the attention it warrants. Payment is collected after acceptance. Applications are reviewed within 48 hours. Most are accepted.</p>
-
-  <div class="pricing-grid">
-
-    <div class="tier">
-      <div>
-        <span class="tier-badge">Tier I · Snapshot</span>
-        <span class="tier-name">Mini NIM Snapshot</span>
-      </div>
-      <div class="tier-price"><sup>$</sup>47</div>
-      <p class="tier-desc">A focused read on your opening chapters. Identifies the primary barrier to reader engagement and the single most urgent thing to address.</p>
-      <ul class="tier-features">
-        <li>Hook and opening strength assessment</li>
-        <li>Voice distinctiveness read</li>
-        <li>Reader drop-off risk analysis</li>
-        <li>One priority fix, clearly stated</li>
-      </ul>
-      <a class="tier-btn" href="https://buy.stripe.com/aFa7sMa2GdYj9bC26k0Fi00">Apply — $47</a>
-    </div>
-
-    <div class="tier featured">
-      <div>
-        <span class="tier-badge">Most Requested · Tier II</span>
-        <span class="tier-name">Full NIM Diagnostic</span>
-      </div>
-      <div class="tier-price"><sup>$</sup>147</div>
-      <p class="tier-desc">The complete evaluation. Every structural, emotional, and narrative dimension assessed across the full four-force system.</p>
-      <ul class="tier-features">
-        <li>Full four-force evaluation</li>
-        <li>Structural and pacing diagnosis</li>
-        <li>Market fit and reader segment read</li>
-        <li>Emotional impact and memorability score</li>
-        <li>Prioritized repair roadmap</li>
-        <li>Hearthprint clarity report</li>
-      </ul>
-      <a class="tier-btn" href="https://buy.stripe.com/eVq5kEgr44nJdrS12g0Fi01">Apply — $147</a>
-    </div>
-
-    <div class="tier">
-      <div>
-        <span class="tier-badge">Tier III · Premium</span>
-        <span class="tier-name">Premium Diagnostic</span>
-      </div>
-      <div class="tier-price"><sup>$</sup>297</div>
-      <p class="tier-desc">Everything in the Full Diagnostic, plus a written debrief walking through each finding with specific, sequenced revision guidance.</p>
-      <ul class="tier-features">
-        <li>Complete Full NIM Diagnostic</li>
-        <li>Extended written debrief</li>
-        <li>Revision priority sequence</li>
-        <li>Fastest route to a stronger manuscript</li>
-      </ul>
-      <a class="tier-btn" href="https://buy.stripe.com/28EfZi2AedYj5Zq26k0Fi02">Apply — $297</a>
-    </div>
-
-  </div>
-</section>
-
-<!-- ── APPLICATION FORM ── -->
-<section class="apply-section" id="apply">
-  <span class="section-label">Your Application</span>
-  <h2 class="section-heading">Apply for Diagnostic Review</h2>
-  <p class="section-intro" style="margin-bottom:2rem;">Most writers don't need more feedback. They need to see <em>what their manuscript is doing.</em></p>
-
-  <form name="nim-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/confirmed.html">
-    <input type="hidden" name="form-name" value="nim-application">
-    <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
-
-    <div class="form-grid">
-      <div class="field">
-        <label>Full Name</label>
-        <input type="text" name="name" placeholder="Your name" required>
-      </div>
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" name="email" placeholder="your@email.com" required>
-      </div>
-      <div class="field">
-        <label>Genre</label>
-        <select name="genre" required>
-          <option value="" disabled selected>Select genre</option>
-          <option>Literary Fiction</option>
-          <option>Commercial Fiction</option>
-          <option>Thriller / Mystery</option>
-          <option>Science Fiction / Fantasy</option>
-          <option>Historical Fiction</option>
-          <option>Memoir / Creative Nonfiction</option>
-          <option>Hybrid / Experimental</option>
-          <option>Romance</option>
-          <option>Horror</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Drafts Completed</label>
-        <select name="drafts" required>
-          <option value="" disabled selected>Select</option>
-          <option>1 draft</option>
-          <option>2 drafts</option>
-          <option>3 drafts</option>
-          <option>4 or more</option>
-          <option>Lost count</option>
-        </select>
-      </div>
-      <div class="field form-full">
-        <label>What feels most frustrating right now?</label>
-        <div class="frustrations-grid">
-          <label class="frustration-opt"><input type="checkbox" name="frustration" value="dont-know-whats-wrong"><span>I don't know what's wrong.</span></label>
-          <label class="frustration-opt"><input type="checkbox" name="frustration" value="revised-forever"><span>I've revised forever and I'm still not sure.</span></label>
-          <label class="frustration-opt"><input type="checkbox" name="frustration" value="contradictory-feedback"><span>Feedback has been contradictory.</span></label>
-          <label class="frustration-opt"><input type="checkbox" name="frustration" value="credibility"><span>Afraid of publishing or querying too early.</span></label>
-          <label class="frustration-opt"><input type="checkbox" name="frustration" value="expert-eyes"><span>I need expert eyes before I move forward.</span></label>
-        </div>
-      </div>
-      <div class="field">
-        <label>Prior Outside Feedback</label>
-        <select name="prior-feedback">
-          <option value="" disabled selected>Select</option>
-          <option>No, this would be my first</option>
-          <option>Yes, from beta readers</option>
-          <option>Yes, from a writing group</option>
-          <option>Yes, from a paid editor</option>
-          <option>Yes, from multiple sources</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Next Intended Step</label>
-        <select name="next-step">
-          <option value="" disabled selected>Select</option>
-          <option>Query literary agents</option>
-          <option>Self-publish</option>
-          <option>Continue revising</option>
-          <option>Undecided</option>
-        </select>
-      </div>
-      <div class="field form-full">
-        <label>Why now? <span style="color:var(--smoke-lt); font-size:0.9em;">(This is the most important question on this form.)</span></label>
-        <textarea name="why-now" placeholder="Tell us what brought you here." required></textarea>
-      </div>
-    </div>
-
-    <div class="form-submit-row">
-      <button type="submit" class="btn-submit">Submit Application</button>
-      <p class="form-privacy">Your manuscript is never stored, shared, or used beyond your evaluation. Handled with the same care given to unpublished work we ourselves would not release. A confidentiality agreement is available on request.</p>
-    </div>
-  </form>
-</section>
-
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-mark">
-        <img src="obp_mark_square_720.png" alt="Ohana Belle Press">
+    <div class="process-list">
+      <div class="process-step reveal">
+        <div class="step-num">1</div>
         <div>
-          <span class="footer-name">Ohana Belle Press</span>
-          <span class="footer-sub">West Virginia · Est. 2025</span>
+          <div class="step-title">Choose Your Assessment</div>
+          <p class="step-desc">Select the assessment that best fits your manuscript and goals.</p>
         </div>
       </div>
-      <p class="footer-body">
-        Narrative Intelligence Method · Hearthprint™<br>
-        <a href="mailto:LoveOhanaBelle@gmail.com">LoveOhanaBelle@gmail.com</a>
-      </p>
-    </div>
-    <div>
-      <p class="footer-body" style="margin-bottom:1rem;">NIM is a proprietary manuscript evaluation system developed by Ohana Belle Press. The Hearthprint is a trademark of Ohana Belle Press.</p>
-      <p class="footer-body">Applications reviewed within 48 hours.<br>Questions: <a href="mailto:LoveOhanaBelle@gmail.com">LoveOhanaBelle@gmail.com</a></p>
+      <div class="process-step reveal">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Submit Your Manuscript</div>
+          <p class="step-desc">Upload your manuscript along with any notes or questions you'd like considered.</p>
+        </div>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Receive Your Diagnostic</div>
+          <p class="step-desc">Your manuscript is analyzed using the Narrative Intelligence Method and reviewed by a human editor.</p>
+        </div>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Revise With Greater Clarity</div>
+          <p class="step-desc">Receive a structured report highlighting strengths, opportunities, patterns, and recommended areas of focus.</p>
+        </div>
+      </div>
     </div>
   </div>
-  <p class="footer-colophon">Built in West Virginia. Named for a dog. Serious about the work.</p>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- FAQ -->
+<section class="section layer bg-subtle">
+  <div class="section-narrow">
+    <div class="rule-ember reveal"></div>
+    <h2 class="prose-headline reveal">Frequently Asked Questions</h2>
+
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <p class="faq-q">Is this editing?</p>
+        <div class="faq-a">
+          <p>Not exactly.</p>
+          <p>Traditional editing focuses on improving what is already on the page.</p>
+          <p>The Narrative Intelligence Method focuses on understanding what is happening in the manuscript before revision decisions are made.</p>
+          <p>Clarity before correction.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <p class="faq-q">Do I need a finished manuscript?</p>
+        <div class="faq-a">
+          <p>No.</p>
+          <p>The method can be useful during drafting, revision, or whenever you feel stuck and uncertain about what to do next.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <p class="faq-q">Will this rewrite my story?</p>
+        <div class="faq-a">
+          <p>No.</p>
+          <p>The assessment provides insight and direction.</p>
+          <p>The creative decisions remain yours.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <p class="faq-q">Is this AI-generated feedback?</p>
+        <div class="faq-a">
+          <p>No.</p>
+          <p>Each assessment is reviewed and interpreted by a human editor using a structured analytical methodology.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="s-div layer"><div class="s-div-line"></div></div>
+
+
+<!-- LEAD MAGNET -->
+<section class="lm-section layer">
+  <p class="lm-eyebrow">See the method at work</p>
+  <h3 class="lm-headline reveal">Read the complete blind test analysis before you decide.</h3>
+  <p class="lm-sub reveal">Three chapters. No title. No author. The full diagnostic delivered to your inbox. One PDF. Nothing else.</p>
+  <div id="kit-form-wrapper" style="max-width:460px;margin:0 auto;">
+    <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
+    <form action="https://app.kit.com/forms/9409442/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="9409442" data-uid="910dbe58e7" data-format="inline" data-version="5" min-width="400 500 600 700 800" style="background:transparent;box-shadow:none;">
+      <div style="display:none"><ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul></div>
+      <div data-element="fields" data-stacked="false" class="seva-fields formkit-fields" style="display:flex;gap:0;">
+        <div class="formkit-field" style="flex:1;">
+          <input class="formkit-input" name="email_address" aria-label="Email Address" placeholder="your@email.com" required type="email" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(212,120,62,0.28);border-right:none;color:#E8DCBC;font-family:Jost,sans-serif;font-size:0.85rem;font-weight:300;padding:0.85rem 1.2rem;outline:none;border-radius:0;">
+        </div>
+        <button data-element="submit" class="formkit-submit" style="background:#D4783E;border:1px solid #D4783E;color:#06050d;font-family:Jost,sans-serif;font-size:0.56rem;font-weight:400;letter-spacing:0.22em;text-transform:uppercase;padding:0.85rem 1.6rem;cursor:pointer;border-radius:0;white-space:nowrap;">
+          <div class="formkit-spinner" style="display:none;"><div></div><div></div><div></div></div>
+          <span>Send the Report</span>
+        </button>
+      </div>
+    </form>
+  </div>
+  <p style="margin-top:0.8rem;font-size:0.62rem;color:#7A6A50;text-align:center;letter-spacing:0.05em;">One email. One PDF. Nothing else.</p>
+</section>
+
+
+<!-- CLOSING CTA -->
+<div class="closing-block layer">
+  <div class="rule-ember reveal"></div>
+  <h2 class="closing-headline reveal">Your Story Is Probably Doing More Than You Think</h2>
+  <p class="closing-body reveal">And perhaps less than you hoped.<br>Both can be true at the same time.</p>
+  <p class="closing-body reveal">The goal is not to judge the manuscript.<br>The goal is to understand it clearly enough to know what comes next.</p>
+  <p class="closing-body reveal">Because every story leaves patterns behind.<br>Once those patterns become visible, revision becomes a very different experience.</p>
+  <div class="reveal">
+    <a href="mailto:LoveOhanaBelle@gmail.com?subject=NIM Assessment Inquiry" class="btn">Start Here</a>
+  </div>
+  <p style="margin-top:1.5rem;font-size:0.65rem;color:var(--text-low);letter-spacing:0.06em;" class="reveal">Or email directly: <a href="mailto:LoveOhanaBelle@gmail.com" style="color:var(--ember-mid);text-decoration:none;">LoveOhanaBelle@gmail.com</a></p>
+</div>
+
+
+<footer class="layer">
+  <img src="/4220.jpg" alt="Ohana Belle Press" class="footer-logo">
+  <div class="footer-text">
+    Ohana Belle Press &nbsp;·&nbsp; West Virginia<br>
+    Narrative Intelligence Method &nbsp;·&nbsp; Hearthprint™<br>
+    <a href="mailto:LoveOhanaBelle@gmail.com">LoveOhanaBelle@gmail.com</a>
+  </div>
 </footer>
 
+<script>
+window.addEventListener('scroll', () => {
+  const d = document.documentElement;
+  document.getElementById('progressBar').style.width =
+    (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+});
+
+const obs = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add('visible');
+}), { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+
+const cv = document.getElementById('fireCanvas');
+const cx = cv.getContext('2d');
+let W, H, pts = [];
+function rs() { W = cv.width = innerWidth; H = cv.height = innerHeight; }
+rs(); window.addEventListener('resize', rs);
+function P() {
+  this.reset = () => {
+    this.x = Math.random()*W; this.y = H+10;
+    this.vx = (Math.random()-.5)*.8; this.vy = -(Math.random()*2.5+1.2);
+    this.life = 1; this.decay = Math.random()*.008+.004;
+    this.r = Math.random()*3+1; this.h = Math.random()*30+15;
+  };
+  this.reset();
+}
+for (let i=0;i<120;i++) { const p=new P(); p.y=Math.random()*H; p.life=Math.random(); pts.push(p); }
+(function draw() {
+  cx.clearRect(0,0,W,H);
+  pts.forEach(p => {
+    p.x+=p.vx; p.y+=p.vy; p.life-=p.decay;
+    if(p.life<=0) p.reset();
+    cx.save(); cx.globalAlpha=p.life*.6;
+    cx.fillStyle=`hsl(${p.h},85%,55%)`;
+    cx.beginPath(); cx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2); cx.fill(); cx.restore();
+  });
+  requestAnimationFrame(draw);
+})();
+</script>
 </body>
 </html>
