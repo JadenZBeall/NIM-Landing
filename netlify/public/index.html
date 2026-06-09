@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manuscript Submission Portal</title>
+  <style>
+    body {
+      background: #0f1115;
+      color: #eaeaea;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
+    .card {
+      background: #161a22;
+      padding: 30px;
+      border-radius: 12px;
+      width: 420px;
+    }
+
+    input, button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      background: #4c7dff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #3a66d6;
+    }
+
+    .note {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Manuscript Submission</h2>
+
+    <input type="text" id="title" placeholder="Manuscript Title (optional)" />
+    <input type="file" id="file" />
+
+    <button onclick="uploadFile()">Submit Manuscript</button>
+
+    <div class="note">
+      Accepted: PDF, DOCX, TXT
+    </div>
+
+    <p id="status"></p>
+  </div>
+
+  <script src="/upload.js"></script>
+</body>
+</html>
