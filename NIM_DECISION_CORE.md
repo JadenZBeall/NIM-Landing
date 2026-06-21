@@ -72,6 +72,10 @@ If a decision is not recorded here, it is not active.
 
 \- All structural changes must be explicit and reversible
 
+\- Structural or architectural changes require pre-approval: update NIM_DECISION_CORE.md or record a Change Order before implementation
+
+\- Update PROJECT_STATUS.md at the end of each work session
+
 
 
 \---
