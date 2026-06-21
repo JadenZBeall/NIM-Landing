@@ -4,6 +4,7 @@
 - System stabilized after Aider model correction
 - Decision Core is active and tracking structural rules
 - Current focus: stabilizing execution flow before landing page edits
+- Added new structural change rules to Decision Core
 
 ## Current Phase
 [Specify current phase, e.g., Planning, Development, Testing]
