@@ -5,6 +5,7 @@
 - Decision Core is active and tracking structural rules
 - Current focus: stabilizing execution flow before landing page edits
 - Added new structural change rules to Decision Core
+- 2026-06-21: Established rule that structural changes require pre-approval via Decision Core or Change Order
 
 ## Current Phase
 [Specify current phase, e.g., Planning, Development, Testing]
